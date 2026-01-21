@@ -14,6 +14,7 @@ import {
   Clock,
   MessageCircle,
   Phone,
+  Cpu,
 } from "lucide-react";
 
 // ============================================
@@ -594,6 +595,64 @@ function TestimonialsSection() {
 }
 
 // ============================================
+// SCIENTIFIC ENDORSEMENT SECTION
+// ============================================
+function ScientificEndorsementSection() {
+  return (
+    <section className="py-20 bg-slate-950 relative overflow-hidden">
+      {/* Background Decorative Grid */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-200 to-yellow-500 mb-4">
+            中西合璧 · 降维打击
+          </h2>
+          <p className="text-slate-400 text-lg">
+            为什么乔门能比你更懂你的孩子？
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Card 1: Western Science */}
+          <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 hover:border-amber-500/50 p-8 rounded-2xl transition-all duration-300 group">
+            <div className="w-14 h-14 rounded-full bg-amber-500/10 flex items-center justify-center mb-6 group-hover:bg-amber-500/20 transition-colors">
+              <Brain className="w-8 h-8 text-amber-500" />
+            </div>
+            <h3 className="text-xl font-bold text-slate-100 mb-3">霍兰德 & 多元智能</h3>
+            <p className="text-slate-400 leading-relaxed">
+              基于哈佛大学霍兰德职业兴趣理论与加德纳多元智能模型，精准拆解孩子潜能结构。
+            </p>
+          </div>
+
+          {/* Card 2: Eastern Wisdom */}
+          <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 hover:border-amber-500/50 p-8 rounded-2xl transition-all duration-300 group">
+            <div className="w-14 h-14 rounded-full bg-amber-500/10 flex items-center justify-center mb-6 group-hover:bg-amber-500/20 transition-colors">
+              <Compass className="w-8 h-8 text-amber-500" />
+            </div>
+            <h3 className="text-xl font-bold text-slate-100 mb-3">鬼谷子三才绝学</h3>
+            <p className="text-slate-400 leading-relaxed">
+              传承两千年的识人智慧，将人分为帅、将、慧三种天命，定性孩子的人生底色。
+            </p>
+          </div>
+
+          {/* Card 3: AI Engine */}
+          <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 hover:border-amber-500/50 p-8 rounded-2xl transition-all duration-300 group">
+            <div className="w-14 h-14 rounded-full bg-amber-500/10 flex items-center justify-center mb-6 group-hover:bg-amber-500/20 transition-colors">
+              <Cpu className="w-8 h-8 text-amber-500" />
+            </div>
+            <h3 className="text-xl font-bold text-slate-100 mb-3">亿级数据推演</h3>
+            <p className="text-slate-400 leading-relaxed">
+              Gemini 2.0 超级模型驱动，学习了 5000 万份成长案例，比经验丰富的老师更客观。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ============================================
 // FOOTER CTA SECTION
 // ============================================
 function FooterCTASection() {
@@ -727,6 +786,7 @@ export default function Home() {
         <TheorySection />
         <ValueSection />
         <TestimonialsSection />
+        <ScientificEndorsementSection />
         <FooterCTASection />
       </div>
     </main>
