@@ -248,28 +248,72 @@ export default function Report() {
               </p>
             </div>
 
-            {/* 雷达图 */}
+            {/* 雷达图 - 东方赛博风格 */}
             <div className="mt-8">
               <h2 className="text-2xl font-bold text-amber-400 mb-6">五维能力雷达图</h2>
               {radarData.length > 0 ? (
                 <ResponsiveContainer width="100%" height={400}>
-                  <RadarChart data={radarData}>
-                    <PolarGrid stroke="#D4AF37" strokeOpacity={0.3} />
+                  <RadarChart 
+                    cx="50%" 
+                    cy="50%" 
+                    outerRadius="80%" 
+                    data={radarData}
+                  >
+                    {/* 定义渐变和阴影滤镜 */}
+                    <defs>
+                      <radialGradient id="goldRadarGradient" cx="50%" cy="50%">
+                        <stop offset="0%" stopColor="#FBBF24" stopOpacity={0.8} />
+                        <stop offset="50%" stopColor="#FCD34D" stopOpacity={0.5} />
+                        <stop offset="100%" stopColor="#D4AF37" stopOpacity={0.2} />
+                      </radialGradient>
+                      {/* 阴影滤镜 */}
+                      <filter id="goldGlow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+                        <feOffset dx="0" dy="0" result="offsetblur" />
+                        <feComponentTransfer>
+                          <feFuncA type="linear" slope="0.8" />
+                        </feComponentTransfer>
+                        <feMerge>
+                          <feMergeNode />
+                          <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                      </filter>
+                    </defs>
+                    
+                    {/* 美化网格 - 圆形网格，微弱的白金色 */}
+                    <PolarGrid 
+                      gridType="circle" 
+                      stroke="rgba(255, 255, 255, 0.2)" 
+                      strokeWidth={1}
+                    />
+                    
+                    {/* 美化文字 - 亮金色，加粗，距离中心更远 */}
                     <PolarAngleAxis
                       dataKey="subject"
-                      tick={{ fill: "#D4AF37", fontSize: 14 }}
+                      tick={{ 
+                        fill: "#FCD34D", 
+                        fontSize: 14, 
+                        fontWeight: "bold",
+                        dy: 5
+                      }}
                     />
+                    
+                    {/* 半径轴 - 隐藏或使用微弱颜色 */}
                     <PolarRadiusAxis
                       angle={90}
                       domain={[0, 100]}
-                      tick={{ fill: "#D4AF37", fontSize: 12 }}
+                      tick={false}
+                      axisLine={false}
                     />
+                    
+                    {/* 升级雷达波 - 渐变填充，亮金色边框，阴影效果 */}
                     <Radar
                       name="能力得分"
                       dataKey="score"
-                      stroke="#D4AF37"
-                      fill="#D4AF37"
-                      fillOpacity={0.3}
+                      stroke="#FCD34D"
+                      strokeWidth={3}
+                      fill="url(#goldRadarGradient)"
+                      filter="url(#goldGlow)"
                     />
                   </RadarChart>
                 </ResponsiveContainer>
