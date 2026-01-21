@@ -2,21 +2,31 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { AIChatBox } from "@/components/AIChatBox";
 import { callAIChat } from "@/services/api";
+import { generateReport } from "@/services/reportService";
+import { Button } from "@/components/ui/button";
+import { FileText, Loader2 } from "lucide-react";
 import type { Message } from "@/components/AIChatBox";
 
 export default function Chat() {
-  const [location] = useLocation();
+  const [, setLocation] = useLocation();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
   const [scores, setScores] = useState<{
     commander: number;
     general: number;
     advisor: number;
   } | null>(null);
+  const [userInfo, setUserInfo] = useState<{
+    userName: string;
+    age: number;
+    gender: string;
+  } | null>(null);
 
-  // 从 URL 参数或 sessionStorage 获取分数
+  // 从 URL 参数或 sessionStorage 获取分数和用户信息
   useEffect(() => {
-    const urlParams = new URLSearchParams(location.split("?")[1] || "");
+    const locationString = typeof location === "string" ? location : window.location.search;
+    const urlParams = new URLSearchParams(locationString.split("?")[1] || "");
     const commander = parseInt(urlParams.get("commander") || "0");
     const general = parseInt(urlParams.get("general") || "0");
     const advisor = parseInt(urlParams.get("advisor") || "0");
@@ -34,6 +44,21 @@ export default function Chat() {
           console.error("Failed to parse quiz scores:", e);
         }
       }
+    }
+
+    // 获取用户信息（从 sessionStorage 或使用默认值）
+    const storedUserInfo = sessionStorage.getItem("userInfo");
+    if (storedUserInfo) {
+      try {
+        setUserInfo(JSON.parse(storedUserInfo));
+      } catch (e) {
+        console.error("Failed to parse user info:", e);
+        // 使用默认值
+        setUserInfo({ userName: "用户", age: 18, gender: "未知" });
+      }
+    } else {
+      // 使用默认值
+      setUserInfo({ userName: "用户", age: 18, gender: "未知" });
     }
   }, [location]);
 
@@ -105,6 +130,47 @@ export default function Chat() {
     }
   };
 
+  // 生成报告
+  const handleGenerateReport = async () => {
+    if (!scores || !userInfo) {
+      alert("缺少必要的分数或用户信息，无法生成报告");
+      return;
+    }
+
+    setIsGeneratingReport(true);
+    try {
+      // 构建用户得分对象（格式：commander, general, advisor）
+      const userScore = {
+        commander: scores.commander,
+        general: scores.general,
+        advisor: scores.advisor,
+      };
+
+      // 构建对话历史（过滤掉 system 消息）
+      const chatHistory = messages
+        .filter((msg) => msg.role !== "system")
+        .map((msg) => ({
+          role: msg.role as "user" | "assistant",
+          content: msg.content,
+        }));
+
+      // 调用报告生成服务
+      const report = await generateReport(userScore, chatHistory, userInfo);
+
+      // 保存报告到 sessionStorage（供 Report 页面使用）
+      sessionStorage.setItem("generatedReport", JSON.stringify(report));
+      sessionStorage.setItem("reportScores", JSON.stringify(scores));
+
+      // 跳转到报告页面
+      setLocation("/report");
+    } catch (error) {
+      console.error("生成报告失败:", error);
+      alert(`生成报告失败：${error instanceof Error ? error.message : String(error)}`);
+    } finally {
+      setIsGeneratingReport(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
@@ -116,6 +182,29 @@ export default function Chat() {
             </p>
           )}
         </div>
+
+        {/* 生成报告按钮 - 放在聊天框上方 */}
+        <div className="mb-4 flex justify-end">
+          <Button
+            onClick={handleGenerateReport}
+            disabled={isGeneratingReport || !scores}
+            size="lg"
+            className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white gap-2"
+          >
+            {isGeneratingReport ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                正在生成报告...
+              </>
+            ) : (
+              <>
+                <FileText className="w-4 h-4" />
+                生成报告
+              </>
+            )}
+          </Button>
+        </div>
+
         <AIChatBox
           messages={messages.filter((msg) => msg.role !== "system")}
           onSendMessage={handleSendMessage}
