@@ -243,7 +243,7 @@ export default function Report() {
                   总分: {identity.score} 分
                 </Badge>
               </div>
-              <p className="text-gray-300 leading-relaxed whitespace-pre-line">
+              <p className="text-slate-300 leading-relaxed whitespace-pre-wrap">
                 {identity.description}
               </p>
             </div>
@@ -374,7 +374,13 @@ export default function Report() {
                       </div>
                     </div>
                   </div>
-                  <p className={`leading-relaxed ${statusStyle.text}`}>
+                  <p className={`leading-relaxed whitespace-pre-wrap ${
+                    layer.status === "collapse" 
+                      ? "text-red-300" 
+                      : layer.status === "unstable" 
+                      ? "text-yellow-300" 
+                      : "text-slate-300"
+                  }`}>
                     {layer.diagnosis}
                   </p>
                 </div>
@@ -398,7 +404,7 @@ export default function Report() {
                 <XCircle className="w-6 h-6 text-red-400" />
                 <h3 className="text-xl font-bold text-red-400">剧本A：维持现状</h3>
               </div>
-              <p className="text-gray-300 leading-relaxed whitespace-pre-line">
+              <p className="text-slate-300 leading-relaxed whitespace-pre-wrap">
                 {future.scenarioA}
               </p>
             </div>
@@ -409,7 +415,7 @@ export default function Report() {
                 <CheckCircle2 className="w-6 h-6 text-amber-400" />
                 <h3 className="text-xl font-bold text-amber-400">剧本B：觉醒辉煌</h3>
               </div>
-              <p className="text-gray-300 leading-relaxed whitespace-pre-line">
+              <p className="text-slate-300 leading-relaxed whitespace-pre-wrap">
                 {future.scenarioB}
               </p>
             </div>
@@ -441,7 +447,7 @@ export default function Report() {
                     </Badge>
                   </div>
                 </div>
-                <p className="text-gray-300 leading-relaxed whitespace-pre-line">
+                <p className="text-slate-300 leading-relaxed whitespace-pre-wrap">
                   {key.solution}
                 </p>
               </div>
