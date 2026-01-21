@@ -96,31 +96,31 @@ export default function Report() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center relative overflow-hidden">
-        {/* 背景动画 */}
+        {/* 背景动画 - 金色/紫色光晕 */}
         <div className="absolute inset-0">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#00ff88]/10 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-[#00ff88]/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#D4AF37]/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] bg-[#6D28D9]/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
         </div>
 
         {/* 加载内容 */}
         <div className="relative z-10 text-center space-y-8">
           {/* 旋转的科技感图标 */}
           <div className="relative">
-            <div className="w-32 h-32 border-4 border-[#00ff88] border-t-transparent rounded-full animate-spin mx-auto" />
+            <div className="w-32 h-32 border-4 border-amber-400 border-t-transparent rounded-full animate-spin mx-auto" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <Sparkles className="w-16 h-16 text-[#00ff88] animate-pulse" />
+              <Sparkles className="w-16 h-16 text-amber-400 animate-pulse" />
             </div>
           </div>
 
           {/* 加载消息 */}
           <div className="space-y-4">
-            <h2 className="text-3xl font-bold text-[#00ff88] animate-pulse">
+            <h2 className="text-3xl font-bold text-amber-400 animate-pulse">
               {loadingMessage}
             </h2>
             <div className="flex items-center justify-center gap-2 text-gray-400">
-              <div className="w-2 h-2 bg-[#00ff88] rounded-full animate-bounce" style={{ animationDelay: "0s" }} />
-              <div className="w-2 h-2 bg-[#00ff88] rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
-              <div className="w-2 h-2 bg-[#00ff88] rounded-full animate-bounce" style={{ animationDelay: "0.4s" }} />
+              <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: "0s" }} />
+              <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
+              <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: "0.4s" }} />
             </div>
           </div>
 
@@ -147,14 +147,14 @@ export default function Report() {
             <div className="flex gap-4 justify-center">
               <Button
                 onClick={() => setLocation("/quiz")}
-                className="bg-[#00ff88] text-black hover:bg-[#00cc6a]"
+                className="bg-amber-500 text-black hover:bg-amber-600"
               >
                 重新测试
               </Button>
               <Button
                 onClick={() => setLocation("/")}
                 variant="outline"
-                className="border-[#00ff88] text-[#00ff88] hover:bg-[#00ff88]/10"
+                className="border-amber-400 text-amber-400 hover:bg-amber-400/10"
               >
                 返回首页
               </Button>
@@ -200,10 +200,10 @@ export default function Report() {
         };
       case "solid":
         return {
-          bg: "bg-green-900/30",
-          border: "border-green-500/50",
-          text: "text-green-400",
-          icon: <CheckCircle2 className="w-5 h-5 text-green-400" />,
+          bg: "bg-amber-900/30",
+          border: "border-amber-500/50",
+          text: "text-amber-400",
+          icon: <CheckCircle2 className="w-5 h-5 text-amber-400" />,
         };
     }
   };
@@ -211,12 +211,12 @@ export default function Report() {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* 顶部导航栏 */}
-      <div className="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-[#00ff88]/20">
+      <div className="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-amber-400/20">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Button
             variant="ghost"
             onClick={() => setLocation("/")}
-            className="text-[#00ff88] hover:bg-[#00ff88]/10"
+            className="text-amber-400 hover:bg-amber-400/10"
           >
             ← 返回首页
           </Button>
@@ -231,15 +231,15 @@ export default function Report() {
         {/* ========================================== */}
         {/* 板块 1: 身份卡 */}
         {/* ========================================== */}
-        <Card className="p-8 bg-gradient-to-br from-gray-900 to-black border-[#00ff88]/30 backdrop-blur-sm">
+        <Card className="p-8 bg-gradient-to-br from-gray-900 to-black border-amber-400/30 backdrop-blur-sm">
           <div className="space-y-6">
             <div>
-              <h1 className="text-5xl font-bold text-[#00ff88] mb-2">
+              <h1 className="text-5xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-amber-300 to-yellow-600">
                 {identity.title}
               </h1>
               <p className="text-xl text-gray-300 mb-4">{identity.subtitle}</p>
               <div className="flex items-center gap-2 mb-4">
-                <Badge className="bg-[#00ff88] text-black text-lg px-4 py-1">
+                <Badge className="bg-amber-800 text-amber-100 border-amber-600 text-lg px-4 py-1">
                   总分: {identity.score} 分
                 </Badge>
               </div>
@@ -250,25 +250,25 @@ export default function Report() {
 
             {/* 雷达图 */}
             <div className="mt-8">
-              <h2 className="text-2xl font-bold text-[#00ff88] mb-6">五维能力雷达图</h2>
+              <h2 className="text-2xl font-bold text-amber-400 mb-6">五维能力雷达图</h2>
               {radarData.length > 0 ? (
                 <ResponsiveContainer width="100%" height={400}>
                   <RadarChart data={radarData}>
-                    <PolarGrid stroke="#00ff88" strokeOpacity={0.3} />
+                    <PolarGrid stroke="#D4AF37" strokeOpacity={0.3} />
                     <PolarAngleAxis
                       dataKey="subject"
-                      tick={{ fill: "#00ff88", fontSize: 14 }}
+                      tick={{ fill: "#D4AF37", fontSize: 14 }}
                     />
                     <PolarRadiusAxis
                       angle={90}
                       domain={[0, 100]}
-                      tick={{ fill: "#00ff88", fontSize: 12 }}
+                      tick={{ fill: "#D4AF37", fontSize: 12 }}
                     />
                     <Radar
                       name="能力得分"
                       dataKey="score"
-                      stroke="#00ff88"
-                      fill="#00ff88"
+                      stroke="#D4AF37"
+                      fill="#D4AF37"
                       fillOpacity={0.3}
                     />
                   </RadarChart>
@@ -285,8 +285,8 @@ export default function Report() {
         {/* ========================================== */}
         {/* 板块 2: 金字塔 */}
         {/* ========================================== */}
-        <Card className="p-8 bg-gray-900/50 border-[#00ff88]/20 backdrop-blur-sm">
-          <h2 className="text-3xl font-bold text-[#00ff88] mb-6">五原力金字塔</h2>
+        <Card className="p-8 bg-gray-900/50 border-amber-400/20 backdrop-blur-sm">
+          <h2 className="text-3xl font-bold text-amber-400 mb-6">五原力金字塔</h2>
           <div className="space-y-4">
             {pyramid.map((layer, idx) => {
               const statusStyle = getStatusStyle(layer.status);
@@ -308,7 +308,7 @@ export default function Report() {
                                   ? "bg-gradient-to-r from-red-500 to-red-600"
                                   : layer.status === "unstable"
                                   ? "bg-gradient-to-r from-yellow-500 to-yellow-600"
-                                  : "bg-gradient-to-r from-green-500 to-green-600"
+                                  : "bg-gradient-to-r from-amber-500 to-amber-600"
                               }`}
                               style={{ width: `${layer.score}%` }}
                             />
@@ -342,8 +342,8 @@ export default function Report() {
         {/* ========================================== */}
         {/* 板块 3: 时光机（未来剧本） */}
         {/* ========================================== */}
-        <Card className="p-8 bg-gray-900/50 border-[#00ff88]/20 backdrop-blur-sm">
-          <h2 className="text-3xl font-bold text-[#00ff88] mb-6 flex items-center gap-2">
+        <Card className="p-8 bg-gray-900/50 border-amber-400/20 backdrop-blur-sm">
+          <h2 className="text-3xl font-bold text-amber-400 mb-6 flex items-center gap-2">
             <Calendar className="w-8 h-8" />
             未来剧本推演
           </h2>
@@ -360,10 +360,10 @@ export default function Report() {
             </div>
 
             {/* 剧本B：觉醒辉煌 */}
-            <div className="p-6 bg-green-900/20 border border-green-500/30 rounded-lg">
+            <div className="p-6 bg-amber-900/20 border border-amber-500/30 rounded-lg">
               <div className="flex items-center gap-2 mb-4">
-                <CheckCircle2 className="w-6 h-6 text-green-400" />
-                <h3 className="text-xl font-bold text-green-400">剧本B：觉醒辉煌</h3>
+                <CheckCircle2 className="w-6 h-6 text-amber-400" />
+                <h3 className="text-xl font-bold text-amber-400">剧本B：觉醒辉煌</h3>
               </div>
               <p className="text-gray-300 leading-relaxed whitespace-pre-line">
                 {future.scenarioB}
@@ -375,8 +375,8 @@ export default function Report() {
         {/* ========================================== */}
         {/* 板块 4: 密钥（行动锦囊） */}
         {/* ========================================== */}
-        <Card className="p-8 bg-gray-900/50 border-[#00ff88]/20 backdrop-blur-sm">
-          <h2 className="text-3xl font-bold text-[#00ff88] mb-6 flex items-center gap-2">
+        <Card className="p-8 bg-gray-900/50 border-amber-400/20 backdrop-blur-sm">
+          <h2 className="text-3xl font-bold text-amber-400 mb-6 flex items-center gap-2">
             <Key className="w-8 h-8" />
             解锁密钥
           </h2>
@@ -384,15 +384,15 @@ export default function Report() {
             {keys.map((key, idx) => (
               <div
                 key={idx}
-                className="p-6 bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-[#00ff88]/30 rounded-lg hover:border-[#00ff88]/50 transition-all"
+                className="p-6 bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-amber-400/30 rounded-lg hover:border-amber-400/50 transition-all"
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-full bg-[#00ff88]/20 flex items-center justify-center">
-                    <Key className="w-5 h-5 text-[#00ff88]" />
+                  <div className="w-10 h-10 rounded-full bg-amber-400/20 flex items-center justify-center">
+                    <Key className="w-5 h-5 text-amber-400" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-white">{key.name}</h3>
-                    <Badge variant="outline" className="border-[#00ff88] text-[#00ff88] mt-1">
+                    <Badge variant="outline" className="border-amber-400 text-amber-400 mt-1">
                       课程 {key.courseIndex + 1}
                     </Badge>
                   </div>
