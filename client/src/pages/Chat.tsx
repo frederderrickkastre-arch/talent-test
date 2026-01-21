@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { AIChatBox } from "@/components/AIChatBox";
 import { callAIChat } from "@/services/api";
-import { generateReport } from "@/services/reportService";
+// 不再需要导入 generateReport，报告生成由 Report 页面直接调用 AI
 import { Button } from "@/components/ui/button";
 import { FileText, Loader2 } from "lucide-react";
 import type { Message } from "@/components/AIChatBox";
@@ -130,45 +130,17 @@ export default function Chat() {
     }
   };
 
-  // 生成报告
+  // 生成报告 - 直接跳转到报告页面，由 Report 页面调用 AI 生成
   const handleGenerateReport = async () => {
-    if (!scores || !userInfo) {
-      alert("缺少必要的分数或用户信息，无法生成报告");
+    // 检查是否有答案记录
+    const storedAnswers = sessionStorage.getItem("quizAnswers");
+    if (!storedAnswers) {
+      alert("未找到答题记录，请先完成测试");
       return;
     }
 
-    setIsGeneratingReport(true);
-    try {
-      // 构建用户得分对象（格式：commander, general, advisor）
-      const userScore = {
-        commander: scores.commander,
-        general: scores.general,
-        advisor: scores.advisor,
-      };
-
-      // 构建对话历史（过滤掉 system 消息）
-      const chatHistory = messages
-        .filter((msg) => msg.role !== "system")
-        .map((msg) => ({
-          role: msg.role as "user" | "assistant",
-          content: msg.content,
-        }));
-
-      // 调用报告生成服务
-      const report = await generateReport(userScore, chatHistory, userInfo);
-
-      // 保存报告到 sessionStorage（供 Report 页面使用）
-      sessionStorage.setItem("generatedReport", JSON.stringify(report));
-      sessionStorage.setItem("reportScores", JSON.stringify(scores));
-
-      // 跳转到报告页面
-      setLocation("/report");
-    } catch (error) {
-      console.error("生成报告失败:", error);
-      alert(`生成报告失败：${error instanceof Error ? error.message : String(error)}`);
-    } finally {
-      setIsGeneratingReport(false);
-    }
+    // 直接跳转到报告页面，Report 页面会自己调用 AI 生成报告
+    setLocation("/report");
   };
 
   return (

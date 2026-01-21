@@ -12,8 +12,11 @@ export default function Quiz() {
     advisor: 0     // 慧才
   });
 
+  const [answers, setAnswers] = useState<Record<number, string>>({});
+
   const handleAnswer = (value: "shuai" | "jiang" | "hui" | "none", score: number) => {
     const newScores = { ...scores };
+    const currentQuestion = questions[current];
     
     // 根据 value 映射到对应的分数字段
     if (value === "shuai") {
@@ -25,16 +28,23 @@ export default function Quiz() {
     }
     // value === "none" 的情况不计分
     
-    if (current < questions.length - 1) {
-      setScores(newScores);
-      setCurrent(current + 1);
-    } else {
-      // 答题结束，跳转到对话，并带上分数
-      // 保存到 sessionStorage
-      sessionStorage.setItem("quizScores", JSON.stringify(newScores));
+    // 保存当前题目的答案
+    const selectedOption = currentQuestion.options.find(opt => opt.value === value);
+    if (selectedOption) {
+      const newAnswers = { ...answers, [currentQuestion.id]: selectedOption.text };
+      setAnswers(newAnswers);
       
-      // 跳转到聊天界面，通过 URL 参数传递分数
-      setLocation(`/chat?commander=${newScores.commander}&general=${newScores.general}&advisor=${newScores.advisor}`);
+      if (current < questions.length - 1) {
+        setScores(newScores);
+        setCurrent(current + 1);
+      } else {
+        // 答题结束，保存完整答案和分数
+        sessionStorage.setItem("quizScores", JSON.stringify(newScores));
+        sessionStorage.setItem("quizAnswers", JSON.stringify(newAnswers));
+        
+        // 跳转到聊天界面，通过 URL 参数传递分数
+        setLocation(`/chat?commander=${newScores.commander}&general=${newScores.general}&advisor=${newScores.advisor}`);
+      }
     }
   };
 
