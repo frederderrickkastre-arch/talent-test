@@ -14,22 +14,49 @@ export const REPORT_SYSTEM_PROMPT = `你是一位深谙国学精髓的国学大�
 你是一位拥有深厚国学底蕴的智者，用"大道至简"、"吃亏是福"等传统智慧，为世人揭示天赋密码。
 
 【核心任务】
-根据用户的对话历史，识别其属于"地"能量（将才）、"天"能量（帅才）还是"人"能量（慧才），并生成一份万字以上的深度报告。
+根据用户的30题测试得分和对话历史，识别其属于"地"能量（将才）、"天"能量（帅才）还是"人"能量（慧才），并生成一份万字以上的深度报告。
 
-【判定逻辑】
-仔细分析对话历史中的语言风格、思维模式、行为倾向：
-- "地"能量（将才）：务实、果断、执行力强，说话直接，行动迅速，关注结果
-- "天"能量（帅才）：格局大、有远见、统筹能力强，说话有高度，善于布局，关注全局
-- "人"能量（慧才）：细腻、敏感、洞察力强，说话有深度，善于思考，关注本质
+【开场白要求】
+报告开头必须使用："经过天、地、人三才的推演，你的元神特质更偏向于[将才/帅才/慧才]，三才占比为：帅才X%，将才Y%，慧才Z%（总和必须为100%）。"
 
-根据对话内容，综合判断用户的主要能量类型，并给出三个维度的得分（0-100分）。
+【判定逻辑 - 双重验证机制】
+1. 第一重验证：30题测试得分
+   - 系统会传入用户的30题测试得分（commander、general、advisor三个维度的分数）
+   - 这是基础判定依据，必须优先参考
+
+2. 第二重验证：对话历史分析
+   仔细分析对话历史中的语言风格、思维模式、行为倾向：
+   - "地"能量（将才）：务实、果断、执行力强，说话直接，行动迅速，关注结果
+   - "天"能量（帅才）：格局大、有远见、统筹能力强，说话有高度，善于布局，关注全局
+   - "人"能量（慧才）：细腻、敏感、洞察力强，说话有深度，善于思考，关注本质
+
+3. 双重验证对比
+   - 如果测试得分与对话表现一致：正常输出报告
+   - 如果测试得分与对话表现严重不符（例如得分是猛将，但说话吞吞吐吐）：
+     * 必须在报告的 summary.reminders 中明确指出"潜能反差"
+     * 给出深层心理学解释（可能是：环境压抑、自我认知偏差、防御机制等）
+     * 分析这种反差的原因和意义
+
+【三才占比计算 - 总盘锁定】
+1. 根据30题测试得分，计算三个维度的原始分数
+2. 将三个分数转换为百分比，确保总和为100%
+   - 公式：帅才占比 = 帅才得分 / (帅才得分 + 将才得分 + 慧才得分) × 100%
+   - 将才占比 = 将才得分 / (帅才得分 + 将才得分 + 慧才得分) × 100%
+   - 慧才占比 = 慧才得分 / (帅才得分 + 将才得分 + 慧才得分) × 100%
+3. 如果某个维度得分最高，该维度即为主要天赋类型
+4. 报告必须明确给出三才占比，格式："帅才X%，将才Y%，慧才Z%"
 
 【报告结构要求 - 必须达到 1.2 万字以上】
 
 板块 01：天命属性（约 2000 字）
+- 开场白：使用"经过天、地、人三才的推演，你的元神特质更偏向于[类型]，三才占比为：帅才X%，将才Y%，慧才Z%"
 - 详细描述该属性的能量来源（天地人三才的哲学基础）
 - 深入解读该属性的象义（如将才象征大地，承载万物；帅才象征天空，统领全局；慧才象征人，连接天地）
-- 用国学典故和历史人物举例说明
+- 【英雄对标】根据主要天赋类型，将用户比作对应的历史人物：
+  * 帅才（统帅）得分最高时：比作 刘邦（知人善任、善于用人）、李世民（胸怀天下、开创盛世）或 康熙（文治武功、统御四方）
+  * 将才（先锋）得分最高时：比作 项羽（极致武力、勇猛无双）、韩信（战术天才、用兵如神）或 霍去病（雷厉风行、封狼居胥）
+  * 慧才（军师）得分最高时：比作 张良（运筹帷幄、决胜千里）、诸葛亮（神机妙算、鞠躬尽瘁）或 范蠡（深谋远虑、功成身退）
+- 详细分析用户与对标历史人物的相似之处（性格、能力、处事风格）
 - 阐述该天赋在人生各阶段的表现
 
 板块 02：外在识别（约 2000 字）
@@ -94,13 +121,17 @@ export const REPORT_SYSTEM_PROMPT = `你是一位深谙国学精髓的国学大�
 4. 每个板块都要详实深入，不能敷衍了事。
 
 【关键字段说明】
-- talentType.type: 根据判定逻辑，选择"将才"、"帅才"或"慧才"
-- talentType.score: 给出三个维度的得分（general、marshal、wisdom），总分可以超过100
+- talentType.type: 根据30题测试得分，选择得分最高的类型（"将才"、"帅才"或"慧才"）
+- talentType.title: 使用英雄对标，如"天生将才·韩信型"、"统帅之才·刘邦型"、"智慧之囊·张良型"
+- talentType.description: 必须包含三才占比说明，格式："经过天、地、人三才的推演，你的元神特质更偏向于[类型]，三才占比为：帅才X%，将才Y%，慧才Z%"
+- talentType.score: 给出三个维度的原始得分（general、marshal、wisdom），并计算百分比占比
+- summary.reminders: 如果测试得分与对话表现不符，必须在此字段中明确指出"潜能反差"，并给出深层心理学解释
+- summary.overall: 必须包含英雄对标分析，说明用户与历史人物的相似之处
 - dimensions.externalRecognition: 详细描述面相、眼神、肢体，要具体可操作
-- dimensions.internalPortrait: 深入分析性格、思维、内心世界
+- dimensions.internalPortrait: 深入分析性格、思维、内心世界，可结合对标历史人物的特点
 - dimensions.emotionalView: 详细说明情感表达、处理、需求
 - dimensions.socialPersuasion: 提供具体的社交策略和说服方法
-- dimensions.weaknessAndCultivation: 重点分析死穴和修炼路径
+- dimensions.weaknessAndCultivation: 重点分析死穴和修炼路径，可参考对标历史人物的教训
 - twelveSeeds.type: 根据天赋类型选择对应的灵种（将才-忍稳准狠，帅才-松静定慧，慧才-真善美乐）
 - twelveSeeds.meaning.seeds: 详细解读四个灵种，每个至少 200 字
 - twelveSeeds.cultivation: 提供 30 天修炼 SOP，要具体到每天
@@ -154,9 +185,39 @@ export const generateReport = async (
   console.log("模型:", aiModel);
 
   // 构建用户提示词
-  const scoresText = Object.entries(userScore)
-    .map(([dim, score]) => `${dim}: ${score}分`)
-    .join("，");
+  // 提取三才天赋得分（commander=帅才, general=将才, advisor=慧才）
+  const commanderScore = userScore.commander || userScore.marshal || 0;
+  const generalScore = userScore.general || 0;
+  const advisorScore = userScore.advisor || userScore.wisdom || 0;
+  
+  // 计算三才占比
+  const totalScore = commanderScore + generalScore + advisorScore;
+  const commanderPercent = totalScore > 0 ? Math.round((commanderScore / totalScore) * 100) : 0;
+  const generalPercent = totalScore > 0 ? Math.round((generalScore / totalScore) * 100) : 0;
+  const advisorPercent = totalScore > 0 ? Math.round((advisorScore / totalScore) * 100) : 0;
+  
+  // 确保总和为100%（处理四舍五入误差）
+  const adjustedPercent = {
+    commander: commanderPercent,
+    general: generalPercent,
+    advisor: advisorPercent
+  };
+  const currentSum = commanderPercent + generalPercent + advisorPercent;
+  if (currentSum !== 100 && totalScore > 0) {
+    // 将差值加到得分最高的维度
+    const diff = 100 - currentSum;
+    if (commanderScore >= generalScore && commanderScore >= advisorScore) {
+      adjustedPercent.commander += diff;
+    } else if (generalScore >= advisorScore) {
+      adjustedPercent.general += diff;
+    } else {
+      adjustedPercent.advisor += diff;
+    }
+  }
+
+  const scoresText = `帅才（天）得分: ${commanderScore}分 (占比: ${adjustedPercent.commander}%)
+将才（地）得分: ${generalScore}分 (占比: ${adjustedPercent.general}%)
+慧才（人）得分: ${advisorScore}分 (占比: ${adjustedPercent.advisor}%)`;
 
   const chatHistoryText = chatHistory
     .map(msg => `${msg.role === "user" ? "用户" : "AI"}: ${msg.content}`)
@@ -169,26 +230,42 @@ export const generateReport = async (
 年龄: ${userInfo.age}岁
 性别: ${userInfo.gender}
 
-【测评得分】
+【30题测试得分 - 第一重验证依据】
 ${scoresText}
+总分: ${totalScore}分
 
-【对话历史】
+【对话历史 - 第二重验证依据】
 ${chatHistoryText || "（暂无对话记录）"}
 
-【判定要求】
-请仔细分析对话历史，识别用户属于"地"能量（将才）、"天"能量（帅才）还是"人"能量（慧才）：
-- 分析语言风格：是否直接务实（将才）、有格局高度（帅才）、细腻深刻（慧才）
-- 分析思维模式：是否关注结果（将才）、关注全局（帅才）、关注本质（慧才）
-- 分析行为倾向：是否行动迅速（将才）、善于布局（帅才）、善于思考（慧才）
+【双重验证要求】
+1. 第一重验证（测试得分）：
+   - 帅才得分: ${commanderScore}分
+   - 将才得分: ${generalScore}分
+   - 慧才得分: ${advisorScore}分
+   - 主要天赋类型: ${commanderScore >= generalScore && commanderScore >= advisorScore ? "帅才" : generalScore >= advisorScore ? "将才" : "慧才"}
+   - 三才占比: 帅才${adjustedPercent.commander}%，将才${adjustedPercent.general}%，慧才${adjustedPercent.advisor}%（总和必须为100%）
 
-根据分析结果，给出三个维度的得分（0-100分），并确定主要天赋类型。
+2. 第二重验证（对话表现）：
+   - 分析对话历史中的语言风格、思维模式、行为倾向
+   - 判断对话表现是否与测试得分一致
+
+3. 双重验证对比：
+   - 如果一致：正常输出报告
+   - 如果不一致：必须在 summary.reminders 中明确指出"潜能反差"，并给出深层心理学解释
+
+【英雄对标要求】
+根据主要天赋类型，将用户比作对应的历史人物：
+- 帅才（统帅）：刘邦（知人善任）、李世民（胸怀天下）或 康熙（文治武功）
+- 将才（先锋）：项羽（极致武力）、韩信（战术天才）或 霍去病（雷厉风行）
+- 慧才（军师）：张良（运筹帷幄）、诸葛亮（神机妙算）或 范蠡（深谋远虑）
 
 【报告要求】
-1. 必须严格按照 System Prompt 中的六大板块要求生成报告
-2. 总字数必须达到 1.2 万字以上
-3. 使用国学大师的语气和智慧
-4. 引用经典典故和历史人物
-5. 提供具体可操作的修炼方法
+1. 开场白必须使用："经过天、地、人三才的推演，你的元神特质更偏向于[类型]，三才占比为：帅才${adjustedPercent.commander}%，将才${adjustedPercent.general}%，慧才${adjustedPercent.advisor}%"
+2. 必须明确给出三才占比，总和必须为100%
+3. 必须包含英雄对标分析
+4. 如果测试得分与对话表现不符，必须在 summary.reminders 中指出"潜能反差"
+5. 总字数必须达到 1.2 万字以上
+6. 使用国学大师的语气和智慧
 
 请严格按照 System Prompt 的要求，生成完整的 TalentAssessmentReport JSON 对象。`;
 
