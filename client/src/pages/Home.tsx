@@ -380,15 +380,13 @@ export default function Home() {
         <div className="text-center">
           <h2 className="text-4xl font-bold mb-6">准备好发现天赋了吗？</h2>
           <p className="text-xl text-gray-400 mb-8">15分钟测评，开启成长新视角</p>
-          <a href="/quiz">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0 rounded-xl font-semibold text-lg h-14 px-10 group"
-            >
-              立即开始
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </a>
+          <Button
+            size="lg"
+            className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white border-0 rounded-xl font-semibold text-lg h-14 px-10 group"
+          >
+            立即开始
+            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+          </Button>
         </div>
       </section>
 
