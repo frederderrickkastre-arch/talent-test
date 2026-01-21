@@ -299,34 +299,31 @@ ${chatHistoryText || "（暂无对话记录）"}
 
     console.log("API 响应状态:", response.status, response.statusText);
 
+    // 先读取响应文本（只读取一次）
+    const responseText = await response.text();
+    
     if (!response.ok) {
-      let errorText = "";
-      try {
-        errorText = await response.text();
-      } catch (e) {
-        errorText = "无法读取错误信息";
-      }
       console.error("API 调用失败:", {
         status: response.status,
         statusText: response.statusText,
-        error: errorText,
+        error: responseText,
       });
       
-      alert('API连接失败！状态码: ' + response.status + '\n原因: ' + errorText);
+      alert('API连接失败！状态码: ' + response.status + '\n原因: ' + responseText.substring(0, 200));
       
-      throw new Error(`API 调用失败: ${response.status} ${response.statusText} - ${errorText}`);
+      throw new Error(`API 调用失败: ${response.status} ${response.statusText} - ${responseText.substring(0, 200)}`);
     }
 
+    // 解析 JSON（使用已读取的文本）
     let data;
     try {
-      data = await response.json();
+      data = JSON.parse(responseText);
+      console.log("API 响应数据:", data);
     } catch (parseError) {
-      const text = await response.text();
-      console.error("JSON 解析失败:", parseError, "响应文本:", text);
-      alert('响应解析失败！\n' + text.substring(0, 200));
-      throw new Error(`响应不是有效的 JSON: ${text.substring(0, 200)}`);
+      console.error("JSON 解析失败:", parseError, "响应文本:", responseText.substring(0, 500));
+      alert('响应解析失败！\n' + responseText.substring(0, 200));
+      throw new Error(`响应不是有效的 JSON: ${responseText.substring(0, 200)}`);
     }
-    console.log("API 响应数据:", data);
 
     // 提取回复内容
     let content = 
