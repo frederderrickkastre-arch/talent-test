@@ -12,11 +12,18 @@ export default function Quiz() {
     advisor: 0     // 慧才
   });
 
-  const handleAnswer = (type: "commander" | "general" | "advisor", score: number) => {
-    const newScores = { 
-      ...scores, 
-      [type]: scores[type] + score 
-    };
+  const handleAnswer = (value: "shuai" | "jiang" | "hui" | "none", score: number) => {
+    const newScores = { ...scores };
+    
+    // 根据 value 映射到对应的分数字段
+    if (value === "shuai") {
+      newScores.commander += score;
+    } else if (value === "jiang") {
+      newScores.general += score;
+    } else if (value === "hui") {
+      newScores.advisor += score;
+    }
+    // value === "none" 的情况不计分
     
     if (current < questions.length - 1) {
       setScores(newScores);
@@ -64,7 +71,7 @@ export default function Quiz() {
           {q.options.map((opt, idx) => (
             <button
               key={idx}
-              onClick={() => handleAnswer(opt.type, opt.score)}
+              onClick={() => handleAnswer(opt.value, opt.score)}
               className="w-full p-4 bg-gray-800 rounded-xl hover:bg-gray-700 transition-all text-left border border-gray-700 hover:border-green-500"
             >
               {opt.text}
