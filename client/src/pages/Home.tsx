@@ -25,7 +25,7 @@ function FloatingParticles() {
       {[...Array(30)].map((_, i) => (
         <div
           key={i}
-          className="absolute w-1 h-1 bg-gold/40 rounded-full particle"
+          className="absolute w-1 h-1 bg-[#D4AF37]/40 rounded-full particle"
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
@@ -37,7 +37,7 @@ function FloatingParticles() {
       {[...Array(20)].map((_, i) => (
         <div
           key={`purple-${i}`}
-          className="absolute w-0.5 h-0.5 bg-cyber-purple-light/30 rounded-full particle"
+          className="absolute w-0.5 h-0.5 bg-[#8B5CF6]/30 rounded-full particle"
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
@@ -80,7 +80,21 @@ function HeroSection() {
   const [, setLocation] = useLocation();
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden nebula-bg grid-pattern">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#050505]">
+      {/* 背景噪点纹理和紫色光晕 */}
+      <div className="absolute inset-0">
+        {/* 噪点纹理 */}
+        <div 
+          className="absolute inset-0 opacity-20 pointer-events-none mix-blend-overlay"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          }}
+        />
+        {/* 紫色光晕 */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#6D28D9] opacity-20 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-[#8B5CF6] opacity-15 rounded-full blur-3xl" />
+      </div>
+
       {/* Digital Rain Effect */}
       <DigitalRain />
       
@@ -89,12 +103,12 @@ function HeroSection() {
 
       {/* Animated background glows */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyber-purple/15 rounded-full blur-3xl animate-pulse-glow" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#6D28D9]/20 rounded-full blur-3xl animate-pulse" />
         <div
-          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gold/10 rounded-full blur-3xl animate-pulse-glow"
+          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#D4AF37]/15 rounded-full blur-3xl animate-pulse"
           style={{ animationDelay: "2s" }}
         />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyber-purple/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#6D28D9]/10 rounded-full blur-3xl" />
       </div>
 
       {/* Content */}
@@ -102,34 +116,34 @@ function HeroSection() {
         {/* Decorative top element */}
         <div className="flex justify-center mb-6">
           <div className="relative">
-            <div className="w-32 h-1 bg-gradient-to-r from-transparent via-gold to-transparent" />
-            <Sparkles className="w-8 h-8 text-gold absolute -top-3.5 left-1/2 -translate-x-1/2 animate-pulse" />
+            <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent" />
+            <Sparkles className="w-8 h-8 text-[#D4AF37] absolute -top-3.5 left-1/2 -translate-x-1/2 animate-pulse" />
           </div>
         </div>
 
-        {/* Main headline - MUCH LARGER with metallic effect */}
-        <h1 className="text-6xl md:text-8xl lg:text-9xl font-black mb-6 tracking-wider leading-tight">
-          <span className="text-metallic-gold">乔门</span>
-          <span className="text-foreground/60 mx-3">·</span>
-          <span className="text-foreground">少年天命觉醒系统</span>
+        {/* Main headline - 金色金属渐变字 */}
+        <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-wider leading-tight">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#FBBF24] to-[#D4AF37] drop-shadow-lg">乔门</span>
+          <span className="text-[#e5e5e5]/60 mx-3">·</span>
+          <span className="text-[#e5e5e5]">少年天命觉醒系统</span>
         </h1>
 
         {/* Subtitle */}
-        <p className="text-xl md:text-2xl text-muted-foreground mb-3 font-light tracking-wide">
+        <p className="text-xl md:text-2xl text-[#a3a3a3] mb-3 font-light tracking-wide">
           这不是测试，这是一次
-          <span className="text-cyber-purple-light font-semibold"> 穿越 20 年 </span>
+          <span className="text-[#8B5CF6] font-semibold"> 穿越 20 年 </span>
           的命运推演
         </p>
 
         {/* Secondary tagline */}
-        <p className="text-sm md:text-base text-muted-foreground/70 mb-10 max-w-2xl mx-auto">
+        <p className="text-sm md:text-base text-[#a3a3a3]/70 mb-10 max-w-2xl mx-auto">
           融合三才古智慧 × AI 数据引擎 | 揭示您孩子的隐藏天赋密码
         </p>
 
-        {/* CTA Button - GOLDEN GRADIENT with BLACK TEXT - 添加跳转 */}
+        {/* CTA Button - 高亮金色 + 黑色文字 + 强发光阴影 */}
         <button
           onClick={() => setLocation("/quiz")}
-          className="btn-golden-glow group relative px-14 py-6 text-xl font-bold text-black rounded-2xl"
+          className="group relative px-10 py-5 text-xl font-black text-black rounded-full shadow-[0_0_30px_rgba(212,175,55,0.6)] hover:scale-105 hover:shadow-[0_0_50px_rgba(212,175,55,0.8)] transition-all duration-300 border-2 border-[#FFFFFF33] bg-gradient-to-r from-[#FBBF24] via-[#D4AF37] to-[#FBBF24]"
         >
           <span className="relative z-10 flex items-center gap-3">
             <Sparkles className="w-6 h-6" />
@@ -139,24 +153,24 @@ function HeroSection() {
         </button>
 
         {/* Trust indicators */}
-        <div className="mt-12 flex flex-wrap justify-center gap-6 text-sm text-muted-foreground/60">
+        <div className="mt-12 flex flex-wrap justify-center gap-6 text-sm text-[#a3a3a3]/60">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-gold rounded-full animate-pulse" />
+            <div className="w-2 h-2 bg-[#D4AF37] rounded-full animate-pulse" />
             <span>10,000+ 家庭信赖</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-cyber-purple-light rounded-full animate-pulse" style={{ animationDelay: "0.5s" }} />
+            <div className="w-2 h-2 bg-[#8B5CF6] rounded-full animate-pulse" style={{ animationDelay: "0.5s" }} />
             <span>AI 深度分析</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-gold rounded-full animate-pulse" style={{ animationDelay: "1s" }} />
+            <div className="w-2 h-2 bg-[#D4AF37] rounded-full animate-pulse" style={{ animationDelay: "1s" }} />
             <span>三才理论基础</span>
           </div>
         </div>
       </div>
 
       {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#050505] to-transparent" />
     </section>
   );
 }
@@ -193,53 +207,53 @@ const painPoints = [
 
 function PainPointsSection() {
   return (
-    <section className="relative py-16 px-4 bg-background grid-pattern">
+    <section className="relative py-16 px-4 bg-[#050505]">
       {/* Background subtle glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-warning-red/5 rounded-full blur-3xl" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#ef4444]/5 rounded-full blur-3xl" />
 
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card-red mb-4">
-            <div className="w-2 h-2 bg-warning-red rounded-full animate-pulse" />
-            <span className="text-warning-red text-sm font-medium">警示</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#0a0a0a]/80 backdrop-blur-md border border-[#ef4444]/30 mb-4">
+            <div className="w-2 h-2 bg-[#ef4444] rounded-full animate-pulse" />
+            <span className="text-[#ef4444] text-sm font-medium">警示</span>
           </div>
-          <h2 className="text-3xl md:text-5xl font-bold mb-3 text-balance">
-            为什么 <span className="text-warning-red">90%</span> 的家长
+          <h2 className="text-3xl md:text-5xl font-bold mb-3 text-balance text-white">
+            为什么 <span className="text-[#ef4444]">90%</span> 的家长
             <br />
             都在做无效努力？
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-[#a3a3a3] max-w-2xl mx-auto">
             在错误的方向上，越努力越迷失。是时候打破认知牢笼了。
           </p>
         </div>
 
-        {/* Pain Point Cards - GLASSMORPHISM */}
+        {/* Pain Point Cards - 半透明深蓝/黑背景 */}
         <div className="grid md:grid-cols-3 gap-5">
           {painPoints.map((point, index) => (
             <div
               key={index}
-              className="group relative p-7 rounded-2xl glass-card-red holo-border transition-all duration-300 hover:scale-[1.03]"
+              className="group relative p-7 rounded-2xl bg-[#0a0a0a]/80 backdrop-blur-md border border-[#991b1b]/50 transition-all duration-300 hover:scale-[1.03] hover:border-[#ef4444]/70"
             >
               {/* Icon */}
-              <div className="w-14 h-14 rounded-xl bg-warning-red/10 border border-warning-red/30 flex items-center justify-center mb-5 group-hover:bg-warning-red/20 transition-colors">
-                <point.icon className="w-7 h-7 text-warning-red" />
+              <div className="w-14 h-14 rounded-xl bg-[#ef4444]/10 border border-[#ef4444]/30 flex items-center justify-center mb-5 group-hover:bg-[#ef4444]/20 transition-colors">
+                <point.icon className="w-7 h-7 text-[#ef4444]" />
               </div>
 
               {/* Content */}
-              <h3 className="text-xl font-bold mb-2 text-foreground">
+              <h3 className="text-xl font-bold mb-2 text-white">
                 {point.title}
               </h3>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-5">
+              <p className="text-[#a3a3a3] text-sm leading-relaxed mb-5">
                 {point.description}
               </p>
 
               {/* Stat */}
-              <div className="pt-4 border-t border-warning-red/20">
-                <span className="text-3xl font-bold text-warning-red">
+              <div className="pt-4 border-t border-[#ef4444]/20">
+                <span className="text-3xl font-bold text-[#ef4444]">
                   {point.stat}
                 </span>
-                <span className="text-muted-foreground text-sm ml-2">
+                <span className="text-[#a3a3a3] text-sm ml-2">
                   {point.statLabel}
                 </span>
               </div>
@@ -287,65 +301,70 @@ const theories = [
 
 function TheorySection() {
   return (
-    <section className="relative py-16 px-4 nebula-bg grid-pattern overflow-hidden">
+    <section className="relative py-16 px-4 bg-[#050505] overflow-hidden">
       {/* Background decorations */}
-      <div className="absolute top-1/2 left-0 w-px h-96 bg-gradient-to-b from-transparent via-gold/30 to-transparent" />
-      <div className="absolute top-1/2 right-0 w-px h-96 bg-gradient-to-b from-transparent via-gold/30 to-transparent" />
+      <div className="absolute top-1/2 left-0 w-px h-96 bg-gradient-to-b from-transparent via-[#D4AF37]/30 to-transparent" />
+      <div className="absolute top-1/2 right-0 w-px h-96 bg-gradient-to-b from-transparent via-[#D4AF37]/30 to-transparent" />
+      
+      {/* 紫色光晕背景 */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#6D28D9]/10 via-transparent to-[#8B5CF6]/10" />
 
       <FloatingParticles />
 
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-4">
-            <Sparkles className="w-4 h-4 text-gold" />
-            <span className="text-gold text-sm font-medium">核心引擎</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#0a0a0a]/80 backdrop-blur-md border border-[#D4AF37]/30 mb-4">
+            <Sparkles className="w-4 h-4 text-[#D4AF37]" />
+            <span className="text-[#D4AF37] text-sm font-medium">核心引擎</span>
           </div>
           <h2 className="text-3xl md:text-5xl font-bold mb-3">
-            <span className="text-metallic-gold">AI + 古智慧</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#FBBF24] to-[#D4AF37] drop-shadow-lg">AI + 古智慧</span>
             <br />
-            <span className="text-foreground">双核驱动系统</span>
+            <span className="text-[#e5e5e5]">双核驱动系统</span>
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-[#a3a3a3] max-w-2xl mx-auto">
             将千年东方智慧与尖端人工智能深度融合，打造独一无二的天赋解读引擎
           </p>
         </div>
 
-        {/* Theory Grid - GLASSMORPHISM */}
+        {/* Theory Grid - 玻璃态效果 */}
         <div className="grid md:grid-cols-2 gap-5">
           {theories.map((theory, index) => (
             <div
               key={index}
-              className={`group relative p-7 rounded-2xl transition-all duration-300 hover:scale-[1.02] ${
-                theory.color === "gold" ? "glass-card" : "glass-card-purple"
-              } holo-border`}
+              className={`group relative p-7 rounded-2xl transition-all duration-300 hover:scale-[1.02] bg-[#0a0a0a]/80 backdrop-blur-md ${
+                theory.color === "gold" 
+                  ? "border border-[#D4AF37]/30" 
+                  : "border border-[#8B5CF6]/30"
+              }`}
             >
               {/* Icon and Title Row */}
               <div className="flex items-start gap-4 mb-4">
                 <div
                   className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
                     theory.color === "gold"
-                      ? "bg-gold/15 border border-gold/30"
-                      : "bg-cyber-purple/15 border border-cyber-purple/30"
+                      ? "bg-[#D4AF37]/15 border border-[#D4AF37]/30"
+                      : "bg-[#8B5CF6]/15 border border-[#8B5CF6]/30"
                   }`}
                 >
                   <theory.icon
                     className={`w-6 h-6 ${
                       theory.color === "gold"
-                        ? "text-gold"
-                        : "text-cyber-purple-light"
+                        ? "text-[#D4AF37]"
+                        : "text-[#8B5CF6]"
                     }`}
                   />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-foreground">
+                  <h3 className="text-xl font-bold text-white">
                     {theory.title}
                   </h3>
                   <span
                     className={`text-xs font-mono ${
                       theory.color === "gold"
-                        ? "text-gold/70"
-                        : "text-cyber-purple-light/70"
+                        ? "text-[#D4AF37]/70"
+                        : "text-[#8B5CF6]/70"
                     }`}
                   >
                     {theory.subtitle}
@@ -354,14 +373,14 @@ function TheorySection() {
               </div>
 
               {/* Description */}
-              <p className="text-muted-foreground text-sm leading-relaxed">
+              <p className="text-[#a3a3a3] text-sm leading-relaxed">
                 {theory.description}
               </p>
 
               {/* Decorative glow */}
               <div
                 className={`absolute bottom-4 right-4 w-24 h-24 rounded-full opacity-20 blur-2xl ${
-                  theory.color === "gold" ? "bg-gold" : "bg-cyber-purple"
+                  theory.color === "gold" ? "bg-[#D4AF37]" : "bg-[#8B5CF6]"
                 }`}
               />
             </div>
@@ -392,37 +411,37 @@ const reportModules = [
 
 function ValueSection() {
   return (
-    <section className="relative py-16 px-4 bg-background grid-pattern overflow-hidden">
+    <section className="relative py-16 px-4 bg-[#050505] overflow-hidden">
       {/* Subtle background elements */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-0 left-1/4 w-96 h-96 border border-gold rounded-full" />
-        <div className="absolute bottom-0 right-1/4 w-64 h-64 border border-cyber-purple rounded-full" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 border border-[#D4AF37] rounded-full" />
+        <div className="absolute bottom-0 right-1/4 w-64 h-64 border border-[#8B5CF6] rounded-full" />
       </div>
 
       <div className="max-w-5xl mx-auto relative z-10">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-4">
-            <Star className="w-4 h-4 text-gold" />
-            <span className="text-gold text-sm font-medium">报告内容</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#0a0a0a]/80 backdrop-blur-md border border-[#D4AF37]/30 mb-4">
+            <Star className="w-4 h-4 text-[#D4AF37]" />
+            <span className="text-[#D4AF37] text-sm font-medium">报告内容</span>
           </div>
           <h2 className="text-3xl md:text-5xl font-bold mb-3">
-            <span className="text-foreground">每个孩子都有</span>
+            <span className="text-white">每个孩子都有</span>
             <br />
-            <span className="text-gradient-purple">独特天赋密码</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e5e5e5] via-[#8B5CF6] to-[#06b6d4]">独特天赋密码</span>
           </h2>
         </div>
 
-        {/* Report Modules Grid - GLASSMORPHISM */}
+        {/* Report Modules Grid - 玻璃态效果 */}
         <div className="space-y-4">
           {reportModules.map((module, index) => (
             <div
               key={index}
-              className="relative p-5 rounded-2xl glass-card holo-border"
+              className="relative p-5 rounded-2xl bg-[#0a0a0a]/80 backdrop-blur-md border border-[#D4AF37]/30"
             >
               {/* Number badge */}
-              <div className="absolute -top-3 right-6 px-3 py-1 rounded-full border border-gold/50 bg-background">
-                <span className="text-gold font-medium text-sm">
+              <div className="absolute -top-3 right-6 px-3 py-1 rounded-full border border-[#D4AF37]/50 bg-[#050505]">
+                <span className="text-[#D4AF37] font-medium text-sm">
                   {module.number}
                 </span>
               </div>
@@ -432,10 +451,10 @@ function ValueSection() {
                 {module.items.map((item, itemIndex) => (
                   <div
                     key={itemIndex}
-                    className="flex items-center gap-3 px-5 py-3 rounded-full bg-secondary/60 backdrop-blur-sm border border-border/30"
+                    className="flex items-center gap-3 px-5 py-3 rounded-full bg-[#1a1a1a]/60 backdrop-blur-sm border border-[#2a2a2a]/30"
                   >
-                    <div className="w-2 h-2 bg-gold rounded-full shrink-0" />
-                    <span className="text-foreground font-medium">{item}</span>
+                    <div className="w-2 h-2 bg-[#D4AF37] rounded-full shrink-0" />
+                    <span className="text-white font-medium">{item}</span>
                   </div>
                 ))}
               </div>
@@ -488,36 +507,39 @@ const testimonials = [
 
 function TestimonialsSection() {
   return (
-    <section className="relative py-16 px-4 nebula-bg grid-pattern overflow-hidden">
+    <section className="relative py-16 px-4 bg-[#050505] overflow-hidden">
       {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyber-purple/5 rounded-full blur-3xl" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#8B5CF6]/10 rounded-full blur-3xl" />
+      
+      {/* 紫色光晕背景 */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#6D28D9]/10 via-transparent to-[#8B5CF6]/10" />
 
       <FloatingParticles />
 
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card-purple mb-4">
-            <Quote className="w-4 h-4 text-cyber-purple-light" />
-            <span className="text-cyber-purple-light text-sm font-medium">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#0a0a0a]/80 backdrop-blur-md border border-[#8B5CF6]/30 mb-4">
+            <Quote className="w-4 h-4 text-[#8B5CF6]" />
+            <span className="text-[#8B5CF6] text-sm font-medium">
               用户心声
             </span>
           </div>
           <h2 className="text-3xl md:text-5xl font-bold mb-3">
-            <span className="text-foreground">他们已找到</span>
-            <span className="text-metallic-gold"> 天命密码</span>
+            <span className="text-white">他们已找到</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#FBBF24] to-[#D4AF37] drop-shadow-lg"> 天命密码</span>
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-[#a3a3a3] max-w-2xl mx-auto">
             来自全国各地家长的真实反馈，见证孩子的蜕变时刻
           </p>
         </div>
 
-        {/* Testimonial Cards - GLASSMORPHISM */}
+        {/* Testimonial Cards - 玻璃态效果 */}
         <div className="grid md:grid-cols-3 gap-5">
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className="group relative p-7 rounded-2xl glass-card holo-border transition-all duration-300 hover:scale-[1.02]"
+              className="group relative p-7 rounded-2xl bg-[#0a0a0a]/80 backdrop-blur-md border border-[#D4AF37]/30 transition-all duration-300 hover:scale-[1.02] hover:border-[#D4AF37]/50"
             >
               {/* Spirit Animal Badge */}
               <div className="absolute -top-4 left-8">
@@ -531,8 +553,8 @@ function TestimonialsSection() {
 
               {/* Quote */}
               <div className="mt-5 mb-5">
-                <Quote className="w-7 h-7 text-gold/30 mb-3" />
-                <p className="text-foreground leading-relaxed text-sm">
+                <Quote className="w-7 h-7 text-[#D4AF37]/30 mb-3" />
+                <p className="text-white leading-relaxed text-sm">
                   {'"'}
                   {testimonial.quote}
                   {'"'}
@@ -542,24 +564,24 @@ function TestimonialsSection() {
               {/* Rating */}
               <div className="flex gap-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 text-gold fill-gold" />
+                  <Star key={i} className="w-4 h-4 text-[#D4AF37] fill-[#D4AF37]" />
                 ))}
               </div>
 
               {/* User Info */}
-              <div className="pt-4 border-t border-gold/10">
+              <div className="pt-4 border-t border-[#D4AF37]/10">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-semibold text-foreground">
+                    <p className="font-semibold text-white">
                       {testimonial.name}
                     </p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-[#a3a3a3]">
                       {testimonial.location}
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs text-muted-foreground">孩子</p>
-                    <p className="text-sm text-gold">{testimonial.childAge}</p>
+                    <p className="text-xs text-[#a3a3a3]">孩子</p>
+                    <p className="text-sm text-[#D4AF37]">{testimonial.childAge}</p>
                   </div>
                 </div>
               </div>
@@ -578,47 +600,47 @@ function FooterCTASection() {
   const [, setLocation] = useLocation();
 
   return (
-    <section className="relative py-20 px-4 bg-background grid-pattern overflow-hidden">
+    <section className="relative py-20 px-4 bg-[#050505] overflow-hidden">
       {/* Massive background glow */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gold/8 rounded-full blur-3xl animate-pulse-glow" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyber-purple/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gold/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#D4AF37]/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#8B5CF6]/15 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[#D4AF37]/15 rounded-full blur-3xl" />
       </div>
 
       <FloatingParticles />
 
       {/* Decorative lines */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent" />
 
       <div className="max-w-4xl mx-auto relative z-10 text-center">
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full glass-card mb-6 animate-float">
-          <MessageCircle className="w-5 h-5 text-gold" />
-          <span className="text-gold font-medium">专业咨询</span>
+        <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#0a0a0a]/80 backdrop-blur-md border border-[#D4AF37]/30 mb-6 animate-float">
+          <MessageCircle className="w-5 h-5 text-[#D4AF37]" />
+          <span className="text-[#D4AF37] font-medium">专业咨询</span>
         </div>
 
-        {/* Main headline - LARGER with metallic */}
+        {/* Main headline - 金色金属渐变字 */}
         <h2 className="text-4xl md:text-6xl lg:text-7xl font-black mb-5 text-balance">
-          <span className="text-foreground">开启您孩子的</span>
+          <span className="text-white">开启您孩子的</span>
           <br />
-          <span className="text-metallic-gold">天命觉醒之旅</span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#FBBF24] to-[#D4AF37] drop-shadow-lg">天命觉醒之旅</span>
         </h2>
 
-        <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
+        <p className="text-lg text-[#a3a3a3] mb-10 max-w-2xl mx-auto">
           想要深入了解孩子的天赋潜能？
           <br />
-          <span className="text-foreground font-medium">
+          <span className="text-white font-medium">
             联系乔门专业老师，获取一对一咨询服务
           </span>
         </p>
 
-        {/* CTA Button - GOLDEN GRADIENT with BLACK TEXT - 添加跳转 */}
+        {/* CTA Button - 高亮金色 + 黑色文字 + 强发光阴影（复制 Hero Section 样式） */}
         <div className="mb-10">
           <button
             onClick={() => setLocation("/quiz")}
-            className="btn-golden-glow group relative px-16 py-7 text-2xl font-black text-black rounded-2xl"
+            className="group relative px-16 py-7 text-2xl font-black text-black rounded-full shadow-[0_0_30px_rgba(212,175,55,0.6)] hover:scale-105 hover:shadow-[0_0_50px_rgba(212,175,55,0.8)] transition-all duration-300 border-2 border-[#FFFFFF33] bg-gradient-to-r from-[#FBBF24] via-[#D4AF37] to-[#FBBF24]"
           >
             <span className="relative z-10 flex items-center gap-4">
               <Phone className="w-7 h-7" />
@@ -629,27 +651,27 @@ function FooterCTASection() {
         </div>
 
         {/* Trust indicators */}
-        <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
+        <div className="flex flex-wrap justify-center gap-6 text-sm text-[#a3a3a3]">
           <div className="flex items-center gap-2">
-            <Shield className="w-5 h-5 text-gold" />
+            <Shield className="w-5 h-5 text-[#D4AF37]" />
             <span>隐私全加密</span>
           </div>
           <div className="flex items-center gap-2">
-            <Clock className="w-5 h-5 text-gold" />
+            <Clock className="w-5 h-5 text-[#D4AF37]" />
             <span>专业解读</span>
           </div>
           <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-gold" />
+            <Sparkles className="w-5 h-5 text-[#D4AF37]" />
             <span>一对一咨询</span>
           </div>
         </div>
 
         {/* Stats */}
-        <div className="mt-10 p-5 rounded-2xl glass-card max-w-lg mx-auto">
+        <div className="mt-10 p-5 rounded-2xl bg-[#0a0a0a]/80 backdrop-blur-md border border-[#D4AF37]/30 max-w-lg mx-auto">
           <div className="flex items-center justify-center gap-4">
-            <div className="w-3 h-3 bg-gold rounded-full animate-pulse" />
-            <p className="text-foreground">
-              已有 <span className="text-gold font-bold">8,742</span>{" "}
+            <div className="w-3 h-3 bg-[#D4AF37] rounded-full animate-pulse" />
+            <p className="text-white">
+              已有 <span className="text-[#D4AF37] font-bold">8,742</span>{" "}
               位家长完成咨询
             </p>
           </div>
@@ -657,21 +679,21 @@ function FooterCTASection() {
       </div>
 
       {/* Footer */}
-      <footer className="mt-16 text-center text-sm text-muted-foreground/60">
+      <footer className="mt-16 text-center text-sm text-[#a3a3a3]/60">
         <div className="flex items-center justify-center gap-2 mb-4">
-          <span className="text-metallic-gold font-bold text-lg">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#FBBF24] to-[#D4AF37] font-bold text-lg">
             乔门 JoyGate
           </span>
         </div>
         <p>© 2026 JoyGate. 融合三才古智慧与AI科技的天赋测评系统</p>
         <div className="mt-4 flex justify-center gap-6 text-xs">
-          <a href="#" className="hover:text-gold transition-colors">
+          <a href="#" className="hover:text-[#D4AF37] transition-colors">
             隐私政策
           </a>
-          <a href="#" className="hover:text-gold transition-colors">
+          <a href="#" className="hover:text-[#D4AF37] transition-colors">
             用户协议
           </a>
-          <a href="#" className="hover:text-gold transition-colors">
+          <a href="#" className="hover:text-[#D4AF37] transition-colors">
             联系我们
           </a>
         </div>
@@ -685,13 +707,28 @@ function FooterCTASection() {
 // ============================================
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background">
-      <HeroSection />
-      <PainPointsSection />
-      <TheorySection />
-      <ValueSection />
-      <TestimonialsSection />
-      <FooterCTASection />
+    <main className="min-h-screen bg-[#050505] relative">
+      {/* 全局背景噪点纹理和紫色光晕 */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        {/* 噪点纹理 */}
+        <div 
+          className="absolute inset-0 opacity-10 mix-blend-overlay"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          }}
+        />
+        {/* 全局紫色光晕 */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[1200px] bg-[#6D28D9] opacity-10 rounded-full blur-3xl" />
+      </div>
+      
+      <div className="relative z-10">
+        <HeroSection />
+        <PainPointsSection />
+        <TheorySection />
+        <ValueSection />
+        <TestimonialsSection />
+        <FooterCTASection />
+      </div>
     </main>
   );
 }
