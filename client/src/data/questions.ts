@@ -139,7 +139,7 @@ export const questions: TalentQuestion[] = [
   
   {
     id: 11,
-    question: "【抗挫力】如果努力了很久，还是没考好，你会？",
+    question: "如果努力了很久，还是没考好，你会？",
     options: [
       { text: "觉得丢人，不想去学校。", value: "shuai", score: 5 },
       { text: "找理由，推卸责任。", value: "hui", score: 5 },
@@ -151,7 +151,7 @@ export const questions: TalentQuestion[] = [
   
   {
     id: 12,
-    question: "【自控力】周末早上，原本计划写作业，但手机就在手边，你会？",
+    question: "周末早上，原本计划写作业，但手机就在手边，你会？",
     options: [
       { text: "先玩一会儿，玩够了再写。", value: "shuai", score: 5 },
       { text: "边玩边写。", value: "hui", score: 5 },
@@ -163,7 +163,7 @@ export const questions: TalentQuestion[] = [
   
   {
     id: 13,
-    question: "【主角力】鞋带开了或者书包太重，你通常会？",
+    question: "鞋带开了或者书包太重，你通常会？",
     options: [
       { text: "伸出脚让爸妈帮我弄。", value: "shuai", score: 5 },
       { text: "自己弄，弄不好发脾气。", value: "jiang", score: 5 },
@@ -175,7 +175,7 @@ export const questions: TalentQuestion[] = [
   
   {
     id: 14,
-    question: "【幸福力】看到同学穿了一双你很想要的新鞋，你心里想？",
+    question: "看到同学穿了一双你很想要的新鞋，你心里想？",
     options: [
       { text: "\"哼，肯定是假的。\"", value: "hui", score: 5 },
       { text: "\"我也要买！\"", value: "jiang", score: 5 },
@@ -187,7 +187,7 @@ export const questions: TalentQuestion[] = [
   
   {
     id: 15,
-    question: "【亲和力】到了一个全是陌生人的新补习班，你会？",
+    question: "到了一个全是陌生人的新补习班，你会？",
     options: [
       { text: "谁也不理，装高冷。", value: "shuai", score: 5 },
       { text: "浑身不自在，想回家。", value: "jiang", score: 5 },
@@ -199,7 +199,7 @@ export const questions: TalentQuestion[] = [
   
   {
     id: 16,
-    question: "【沟通力】妈妈唠叨你\"快点去洗澡\"，你正在看电视，你会？",
+    question: "妈妈唠叨你\"快点去洗澡\"，你正在看电视，你会？",
     options: [
       { text: "大喊：\"烦死了！\"", value: "shuai", score: 5 },
       { text: "假装没听见。", value: "hui", score: 5 },
@@ -211,7 +211,7 @@ export const questions: TalentQuestion[] = [
   
   {
     id: 17,
-    question: "【效能力】这周的作业很多，只有两天时间，你会？",
+    question: "这周的作业很多，只有两天时间，你会？",
     options: [
       { text: "拖到最后哭着补。", value: "jiang", score: 5 },
       { text: "只做简单的。", value: "hui", score: 5 },
@@ -223,7 +223,7 @@ export const questions: TalentQuestion[] = [
   
   {
     id: 18,
-    question: "【专注力】上课的时候，窗外突然有鸟叫，你会？",
+    question: "上课的时候，窗外突然有鸟叫，你会？",
     options: [
       { text: "马上转头看。", value: "shuai", score: 5 },
       { text: "脑子里想游戏。", value: "hui", score: 5 },
@@ -235,7 +235,7 @@ export const questions: TalentQuestion[] = [
   
   {
     id: 19,
-    question: "【学习力】老师讲了一个新知识点，你没听懂，你会？",
+    question: "老师讲了一个新知识点，你没听懂，你会？",
     options: [
       { text: "不敢问，装懂。", value: "shuai", score: 5 },
       { text: "放弃听讲。", value: "jiang", score: 5 },
@@ -247,7 +247,7 @@ export const questions: TalentQuestion[] = [
   
   {
     id: 20,
-    question: "【创造力】如果你有100块钱，你想怎么用？",
+    question: "如果你有100块钱，你想怎么用？",
     options: [
       { text: "全买零食花光。", value: "jiang", score: 5 },
       { text: "藏起来不舍得花。", value: "hui", score: 5 },
@@ -259,7 +259,7 @@ export const questions: TalentQuestion[] = [
   
   {
     id: 21,
-    question: "【贵人力】你需要老师帮忙写推荐信，你会？",
+    question: "你需要老师帮忙写推荐信，你会？",
     options: [
       { text: "不好意思去。", value: "jiang", score: 5 },
       { text: "觉得老师该主动找我。", value: "shuai", score: 5 },
@@ -271,7 +271,7 @@ export const questions: TalentQuestion[] = [
   
   {
     id: 22,
-    question: "【领导力】小组活动，大家意见不统一，你会？",
+    question: "小组活动，大家意见不统一，你会？",
     options: [
       { text: "拍桌子强迫大家。", value: "shuai", score: 5 },
       { text: "赌气不玩了。", value: "jiang", score: 5 },
