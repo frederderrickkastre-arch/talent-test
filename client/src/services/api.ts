@@ -7,7 +7,7 @@ import { ASSESSMENT_QUESTIONS, type QuestionData } from "@/data/questions";
 import * as storage from "./storage";
 
 // AI 对话函数 - 只使用真实 API
-async function callAIChat(message: string, conversationHistory: Array<{ role: "user" | "assistant"; content: string }>): Promise<string> {
+export async function callAIChat(message: string, conversationHistory: Array<{ role: "user" | "assistant"; content: string }>): Promise<string> {
   const apiKey = import.meta.env.VITE_API_KEY;
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
   const aiModel = import.meta.env.VITE_AI_MODEL;
