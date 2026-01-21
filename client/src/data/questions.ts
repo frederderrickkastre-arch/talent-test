@@ -408,4 +408,6 @@ export function determineTalentType(scores: {
     return "慧才";
   }
 }
-// v1
+
+// 兼容性导出：为了兼容 api.ts 对 ASSESSMENT_QUESTIONS 的引用需求
+export const ASSESSMENT_QUESTIONS = questions;
