@@ -1,5 +1,11 @@
 /**
- * AI 服务 - 调用 Gemini AI 生成报告
+ * AI 服务 - 调用自定义 API 提供商生成报告
+ * 
+ * 配置信息：
+ * - Base URL: https://www.eden321.com/v1
+ * - Model: gemini-3-pro-preview
+ * - API Key: VITE_GOOGLE_API_KEY (环境变量)
+ * - 接口格式: OpenAI 兼容格式 (/v1/chat/completions)
  */
 
 import type { ReportData, ReportRequest, ReportResponse } from "@/types/report";
@@ -153,14 +159,15 @@ function formatAnswersForAI(answers: Record<number, string>): Record<number, str
 export async function generateReportByAI(
   answers: Record<number, string>
 ): Promise<ReportData> {
-  const apiKey = import.meta.env.VITE_API_KEY;
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-  const aiModel = import.meta.env.VITE_AI_MODEL;
+  // 使用自定义 API 提供商配置
+  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+  const apiBaseUrl = "https://www.eden321.com/v1";
+  const aiModel = "gemini-3-pro-preview";
 
   // 检查配置
-  if (!apiKey || !apiBaseUrl || !aiModel) {
+  if (!apiKey) {
     throw new Error(
-      "API 配置不完整。请检查 .env 文件中的 VITE_API_KEY、VITE_API_BASE_URL 和 VITE_AI_MODEL"
+      "API 配置不完整。请检查 .env 文件中的 VITE_GOOGLE_API_KEY"
     );
   }
 
@@ -253,5 +260,227 @@ export async function generateReportByAI(
       throw error;
     }
     throw new Error("生成报告时发生未知错误");
+  }
+}
+
+/**
+ * 生成基础报告（快速部分）
+ * 包含：identity（身份信息）和 pyramid（基础结构，简短诊断）
+ */
+export async function generateBasicReport(
+  answers: Record<number, string>
+): Promise<Partial<ReportData>> {
+  // 使用自定义 API 提供商配置
+  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+  const apiBaseUrl = "https://www.eden321.com/v1";
+  const aiModel = "gemini-3-pro-preview";
+
+  if (!apiKey) {
+    throw new Error(
+      "API 配置不完整。请检查 .env 文件中的 VITE_GOOGLE_API_KEY"
+    );
+  }
+
+  const answersJson = JSON.stringify(answers, null, 2);
+  const basicPrompt = `你是一位精通《易经》三才智慧与现代儿童心理学的宗师"乔门"。
+
+用户的 27 道题答案如下：${answersJson}
+
+请快速生成基础报告（只输出 JSON，不要 Markdown 代码块）：
+
+{
+  "identity": {
+    "title": "身份标题（如：黄金狮王、烈焰元帅、逍遥鲲鹏、璀璨孔雀、温润考拉）",
+    "subtitle": "茧中形态（如：茧中形态：暴躁孤君）",
+    "description": "约 500 字的判词，必须包含：至少 3 个具体的性格特征描述 + 1 个具体的比喻 + 天赋和魔心的深度分析",
+    "score": 0-100 的总分,
+    "radar": [
+      { "subject": "野心", "A": 0-100, "fullMark": 100 },
+      { "subject": "抗挫力", "A": 0-100, "fullMark": 100 },
+      { "subject": "策略性", "A": 0-100, "fullMark": 100 },
+      { "subject": "共情力", "A": 0-100, "fullMark": 100 },
+      { "subject": "独立性", "A": 0-100, "fullMark": 100 },
+      { "subject": "适应性", "A": 0-100, "fullMark": 100 }
+    ]
+  },
+  "pyramid": [
+    { "layer": "根基层：安全原力", "score": 0-100, "status": "collapse" | "unstable" | "solid", "diagnosis": "简短诊断（约 50 字）" },
+    { "layer": "养分层：亲密原力", "score": 0-100, "status": "collapse" | "unstable" | "solid", "diagnosis": "简短诊断（约 50 字）" },
+    { "layer": "枝干层：目标原力", "score": 0-100, "status": "collapse" | "unstable" | "solid", "diagnosis": "简短诊断（约 50 字）" },
+    { "layer": "花果层：成就原力", "score": 0-100, "status": "collapse" | "unstable" | "solid", "diagnosis": "简短诊断（约 50 字）" }
+  ]
+}`;
+
+  const finalUrl = `${apiBaseUrl}/chat/completions`;
+  const requestBody = {
+    model: aiModel,
+    messages: [{ role: "user", content: basicPrompt }],
+    response_format: { type: "json_object" },
+    temperature: 0.7,
+    max_tokens: 3000,
+  };
+
+  try {
+    const response = await fetch(finalUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API 调用失败: ${response.status} ${response.statusText} - ${errorText}`);
+    }
+
+    const data = await response.json();
+    const content = data.choices?.[0]?.message?.content || data.content || data.response || "";
+
+    if (!content) {
+      throw new Error("AI 返回内容为空");
+    }
+
+    let jsonContent = content.trim();
+    if (jsonContent.startsWith("```json")) {
+      jsonContent = jsonContent.replace(/^```json\s*/, "").replace(/\s*```$/, "");
+    } else if (jsonContent.startsWith("```")) {
+      jsonContent = jsonContent.replace(/^```\s*/, "").replace(/\s*```$/, "");
+    }
+
+    const basicData = JSON.parse(jsonContent);
+    return {
+      identity: basicData.identity,
+      pyramid: basicData.pyramid,
+    };
+  } catch (error) {
+    console.error("生成基础报告失败:", error);
+    throw error instanceof Error ? error : new Error("生成基础报告时发生未知错误");
+  }
+}
+
+/**
+ * 生成深度分析（耗时部分）
+ * 包含：详细的 pyramid diagnosis, future, keys
+ */
+export async function generateDeepAnalysis(
+  answers: Record<number, string>,
+  basicData: Partial<ReportData>
+): Promise<Partial<ReportData>> {
+  // 使用自定义 API 提供商配置
+  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+  const apiBaseUrl = "https://www.eden321.com/v1";
+  const aiModel = "gemini-3-pro-preview";
+
+  if (!apiKey) {
+    throw new Error(
+      "API 配置不完整。请检查 .env 文件中的 VITE_GOOGLE_API_KEY"
+    );
+  }
+
+  const answersJson = JSON.stringify(answers, null, 2);
+  const basicDataJson = JSON.stringify(basicData, null, 2);
+  
+  // 获取基础报告中的金字塔数据
+  const pyramidBase = basicData.pyramid || [];
+  const layer1 = pyramidBase[0] || { score: 0, status: "unstable" };
+  const layer2 = pyramidBase[1] || { score: 0, status: "unstable" };
+  const layer3 = pyramidBase[2] || { score: 0, status: "unstable" };
+  const layer4 = pyramidBase[3] || { score: 0, status: "unstable" };
+  
+  const deepPrompt = `你是一位精通《易经》三才智慧与现代儿童心理学的宗师"乔门"。
+
+用户的 27 道题答案如下：${answersJson}
+
+基础报告数据：${basicDataJson}
+
+请基于基础报告，生成深度分析部分（只输出 JSON，不要 Markdown 代码块）：
+
+{
+  "pyramid": [
+    { 
+      "layer": "根基层：安全原力", 
+      "score": ${layer1.score}, 
+      "status": "${layer1.status}", 
+      "diagnosis": "详细的 200 字诊断，必须包含：1. 表象行为分析（60字） 2. 深层心理归因（80字） 3. 严重后果预警（60字）"
+    },
+    { 
+      "layer": "养分层：亲密原力", 
+      "score": ${layer2.score}, 
+      "status": "${layer2.status}", 
+      "diagnosis": "详细的 200 字诊断，必须包含：1. 表象行为分析（60字） 2. 深层心理归因（80字） 3. 严重后果预警（60字）"
+    },
+    { 
+      "layer": "枝干层：目标原力", 
+      "score": ${layer3.score}, 
+      "status": "${layer3.status}", 
+      "diagnosis": "详细的 200 字诊断，必须包含：1. 表象行为分析（60字） 2. 深层心理归因（80字） 3. 严重后果预警（60字）"
+    },
+    { 
+      "layer": "花果层：成就原力", 
+      "score": ${layer4.score}, 
+      "status": "${layer4.status}", 
+      "diagnosis": "详细的 200 字诊断，必须包含：1. 表象行为分析（60字） 2. 深层心理归因（80字） 3. 严重后果预警（60字）"
+    }
+  ],
+  "future": {
+    "scenarioA": "十年后的悲惨剧本，必须不少于 300 字，要具体、有画面感，描述工作状态、家庭关系、收入水平、心理状态、社交圈子",
+    "scenarioB": "十年后的辉煌剧本，必须不少于 300 字，要具体、有画面感，描述工作状态、家庭关系、收入水平、心理状态、社交圈子"
+  },
+  "keys": [
+    { "name": "锁心猿", "solution": "具体的解决方案，约 100 字...", "courseIndex": 0 },
+    { "name": "烧魔心", "solution": "具体的解决方案，约 100 字...", "courseIndex": 1 },
+    { "name": "通天脉", "solution": "具体的解决方案，约 100 字...", "courseIndex": 2 }
+  ]
+}`;
+
+  const finalUrl = `${apiBaseUrl}/chat/completions`;
+  const requestBody = {
+    model: aiModel,
+    messages: [{ role: "user", content: deepPrompt }],
+    response_format: { type: "json_object" },
+    temperature: 0.7,
+    max_tokens: 6000,
+  };
+
+  try {
+    const response = await fetch(finalUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`API 调用失败: ${response.status} ${response.statusText} - ${errorText}`);
+    }
+
+    const data = await response.json();
+    const content = data.choices?.[0]?.message?.content || data.content || data.response || "";
+
+    if (!content) {
+      throw new Error("AI 返回内容为空");
+    }
+
+    let jsonContent = content.trim();
+    if (jsonContent.startsWith("```json")) {
+      jsonContent = jsonContent.replace(/^```json\s*/, "").replace(/\s*```$/, "");
+    } else if (jsonContent.startsWith("```")) {
+      jsonContent = jsonContent.replace(/^```\s*/, "").replace(/\s*```$/, "");
+    }
+
+    const deepData = JSON.parse(jsonContent);
+    return {
+      pyramid: deepData.pyramid,
+      future: deepData.future,
+      keys: deepData.keys,
+    };
+  } catch (error) {
+    console.error("生成深度分析失败:", error);
+    throw error instanceof Error ? error : new Error("生成深度分析时发生未知错误");
   }
 }
