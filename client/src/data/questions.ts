@@ -36,9 +36,9 @@ export const questions: TalentQuestion[] = [
     phase: 1,
     question: "当你闭上眼睛，感受内心深处的能量，你看到的原力来源是什么？",
     options: [
-      { text: "拨云见日的金光", type: "S", score: 5, imageUrl: "/images/questions/拨云见日的金光.png" },
-      { text: "律动的大地脉搏", type: "J", score: 5, imageUrl: "/images/questions/律动的大地脉搏.png" },
-      { text: "深邃的智慧古灯", type: "H", score: 5, imageUrl: "/images/questions/深邃的智慧古灯.png" }
+      { text: "拨云见日的金光", type: "S", score: 5, imageUrl: "/images/questions/q1-a.png" },
+      { text: "律动的大地脉搏", type: "J", score: 5, imageUrl: "/images/questions/q1-b.png" },
+      { text: "深邃的智慧古灯", type: "H", score: 5, imageUrl: "/images/questions/q1-c.png" }
     ],
     dimension: "原力来源"
   },
@@ -47,9 +47,9 @@ export const questions: TalentQuestion[] = [
     phase: 1,
     question: "在梦境的世界里，你发现自己穿上了一套潜意识为你准备的衣装，那是什么样子的？",
     options: [
-      { text: "威严的机甲", type: "S", score: 5, imageUrl: "/images/questions/威严的机甲.png" },
-      { text: "时尚的猎装", type: "J", score: 5, imageUrl: "/images/questions/时尚的猎装.png" },
-      { text: "经典的古袍", type: "H", score: 5, imageUrl: "/images/questions/经典的古袍.png" }
+      { text: "威严的机甲", type: "S", score: 5, imageUrl: "/images/questions/q2-a.png" },
+      { text: "时尚的猎装", type: "J", score: 5, imageUrl: "/images/questions/q2-b.png" },
+      { text: "经典的古袍", type: "H", score: 5, imageUrl: "/images/questions/q2-c.png" }
     ],
     dimension: "潜意识衣装"
   },
@@ -58,9 +58,9 @@ export const questions: TalentQuestion[] = [
     phase: 1,
     question: "如果可以实现一个内心最深处的渴望，你最想拥有的画面是？",
     options: [
-      { text: "俯瞰领地的金雕", type: "S", score: 5, imageUrl: "/images/questions/俯瞰领地的金雕.png" },
-      { text: "篝火旁的英雄聚会", type: "J", score: 5, imageUrl: "/images/questions/英雄聚会.png" },
-      { text: "漂浮的星空图书馆", type: "H", score: 5, imageUrl: "/images/questions/星空图书馆.png" }
+      { text: "俯瞰领地的金雕", type: "S", score: 5, imageUrl: "/images/questions/q3-a.png" },
+      { text: "篝火旁的英雄聚会", type: "J", score: 5, imageUrl: "/images/questions/q3-b.png" },
+      { text: "漂浮的星空图书馆", type: "H", score: 5, imageUrl: "/images/questions/q3-c.png" }
     ],
     dimension: "核心渴望"
   },
@@ -69,9 +69,9 @@ export const questions: TalentQuestion[] = [
     phase: 1,
     question: "在幻境中，你面前出现了三扇恐惧之门。哪扇门让你最不想进去？",
     options: [
-      { text: "孤独的高处王座", type: "S", score: 5, imageUrl: "/images/questions/孤独的高处王座.png" },
-      { text: "迷雾中松开的双手", type: "J", score: 5, imageUrl: "/images/questions/迷雾中松开的手2.png" },
-      { text: "被锁链束缚的家园", type: "H", score: 5, imageUrl: "/images/questions/束缚的家园.png" }
+      { text: "孤独的高处王座", type: "S", score: 5, imageUrl: "/images/questions/q4-a.png" },
+      { text: "迷雾中松开的双手", type: "J", score: 5, imageUrl: "/images/questions/q4-b.png" },
+      { text: "被锁链束缚的家园", type: "H", score: 5, imageUrl: "/images/questions/q4-c.png" }
     ],
     dimension: "恐惧之门"
   },
@@ -80,9 +80,9 @@ export const questions: TalentQuestion[] = [
     phase: 1,
     question: "当你踏上探险之旅，你最自然呈现的行动姿态是？",
     options: [
-      { text: "浪尖上的船长", type: "S", score: 5, imageUrl: "/images/questions/浪尖上的船长.png" },
-      { text: "专注的工匠", type: "J", score: 5, imageUrl: "/images/questions/专注的工匠.png" },
-      { text: "游历的学者", type: "H", score: 5, imageUrl: "/images/questions/游历的学者.png" }
+      { text: "浪尖上的船长", type: "S", score: 5, imageUrl: "/images/questions/q5-a.png" },
+      { text: "专注的工匠", type: "J", score: 5, imageUrl: "/images/questions/q5-b.png" },
+      { text: "游历的学者", type: "H", score: 5, imageUrl: "/images/questions/q5-c.png" }
     ],
     dimension: "行动姿态"
   },
@@ -91,9 +91,9 @@ export const questions: TalentQuestion[] = [
     phase: 1,
     question: "智者告诉你，要治愈内心的伤痛，你需要选择一种终极解药。你会选？",
     options: [
-      { text: "碎裂的华丽镜子", type: "S", score: 5, imageUrl: "/images/questions/碎裂的华丽镜子4.png" },
-      { text: "照亮森林的火把", type: "J", score: 5, imageUrl: "/images/questions/照亮森林的火把.png" },
-      { text: "撒向人群的金币", type: "H", score: 5, imageUrl: "/images/questions/撒向人群的金币.png" }
+      { text: "碎裂的华丽镜子", type: "S", score: 5, imageUrl: "/images/questions/q6-a.png" },
+      { text: "照亮森林的火把", type: "J", score: 5, imageUrl: "/images/questions/q6-b.png" },
+      { text: "撒向人群的金币", type: "H", score: 5, imageUrl: "/images/questions/q6-c.png" }
     ],
     dimension: "终极解药"
   },
