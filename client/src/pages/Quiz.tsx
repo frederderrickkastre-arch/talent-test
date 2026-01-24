@@ -150,6 +150,8 @@ export default function Quiz() {
                       <img 
                         src={opt.imageUrl} 
                         alt={opt.text}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                         onError={(e) => {
                           // 图片加载失败时隐藏图片
