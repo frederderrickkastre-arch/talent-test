@@ -468,3 +468,53 @@ html {
   pointer-events: none;
   opacity: 0.5;
 }
+
+/* ========================================== */
+/* 灵种球体浮动动画 */
+/* ========================================== */
+@keyframes float-orb {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float-orb {
+  animation: float-orb 3s ease-in-out infinite;
+}
+
+/* 不同延迟的浮动变体 */
+.animate-float-orb-delay-1 {
+  animation: float-orb 3s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.animate-float-orb-delay-2 {
+  animation: float-orb 3s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.animate-float-orb-delay-3 {
+  animation: float-orb 3s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+/* 灵种球体发光效果 */
+.orb-glow-amber {
+  box-shadow: 
+    0 0 20px rgba(251, 191, 36, 0.4),
+    0 0 40px rgba(251, 191, 36, 0.2),
+    inset 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.orb-glow-green {
+  box-shadow: 
+    0 0 20px rgba(74, 222, 128, 0.4),
+    0 0 40px rgba(74, 222, 128, 0.2),
+    inset 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.orb-glow-gray {
+  box-shadow: 
+    0 0 15px rgba(156, 163, 175, 0.3),
+    0 0 30px rgba(156, 163, 175, 0.15),
+    inset 0 0 10px rgba(255, 255, 255, 0.1);
+}

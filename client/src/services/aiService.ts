@@ -1,180 +1,280 @@
 /**
- * AI 服务 - 调用自定义 API 提供商生成报告
+ * AI 服务 - 四阶金字塔报告生成
  * 
- * 配置信息：
- * - Base URL: https://www.eden321.com/v1
- * - Model: gemini-3-pro-preview
- * - API Key: VITE_GOOGLE_API_KEY (环境变量)
- * - 接口格式: OpenAI 兼容格式 (/v1/chat/completions)
+ * 报告结构：
+ * 1. 元神觉醒（三才金字塔底层）
+ * 2. 五原力雷达（能量引擎层）
+ * 3. 12灵种与人生剧本（生命图谱层）
+ * 4. 终极形态唤醒（生命跨越层）
+ * 
+ * 总字数：严控 2500 字以上
  */
 
-import type { ReportData, ReportRequest, ReportResponse } from "@/types/report";
-import { questions } from "@/data/questions";
+import type { ReportData } from "@/types/report";
 
 /**
- * 生成报告的核心提示词 - 乔门·少年天命觉醒诊断书专用深度 Prompt
+ * 构建四阶金字塔报告的深度 Prompt
  */
-function buildReportPrompt(answers: Record<number, string>): string {
+function buildFourTierPyramidPrompt(answers: Record<number, string>): string {
   const answersJson = JSON.stringify(answers, null, 2);
   
-  return `IMPORTANT: You are writing a PAID PROFESSIONAL REPORT. Detailed analysis is required. Do NOT summarize. The total output length must exceed 2500 Chinese characters.
+  return `【身份设定】
+你是"乔门宗师"——一位融贯《易经》三才智慧、盖洛普优势理论、MBTI 性格分析和霍兰德职业测评的顶尖大师。你正在为一位 8-16 岁少年的家长撰写一份《少年天命觉醒诊断书》。
 
-你是一位精通《易经》三才智慧与现代儿童心理学的宗师"乔门"。你正在为一位家长生成一份《少年天命觉醒诊断书》。
+【核心使命】
+这是一份改变孩子命运的付费报告。你必须像一位阅人无数的宗师在指点迷津，文字要扎心、有穿透力、让家长如醍醐灌顶。杜绝任何空洞的"AI 腔"和敷衍的概括。
 
-用户的 27 道题答案如下：${answersJson}
+【用户测评答案】
+${answersJson}
 
-请严格按照以下 4 个板块的逻辑，输出一个纯 JSON 对象（不要包含 Markdown 代码块标记，直接输出 JSON）：
+【输出要求】
+1. 直接输出纯 JSON，不要任何 Markdown 代码块标记
+2. 总字数必须超过 2500 中文字符
+3. 情绪曲线：震撼→扎心→焦虑→渴望→行动
+4. 文风：半文半白的宗师口吻，先肯定再痛斥，有画面感
 
-⚠️ 字数警告：写得短就是不合格！必须详细展开，不要概括总结。
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+第一板块：元神觉醒（三才金字塔底层）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-**板块一：天命封印·身份揭秘 (对应 identity 字段)**
-* **情绪目标**：好奇、惊喜。
-* **字数要求**：description 字段必须不少于 500 字，必须详细展开，不要概括。
-* **内容逻辑**：
-    1.  **本命神兽**：基于答案判断他是狮子（统帅）、老虎（战神）、孔雀（明星）、猫头鹰（智者）还是考拉（和平者）。
-    2.  **茧中形态**：必须指出他现在的"病态"（如：暴躁孤君、折翼天鹅）。
-    3.  **天赋判词**：用半文半白的宗师口吻，先肯定他的惊人天赋（如"骨子里流淌着统帅的血"），再话锋一转，指出他被"魔心"（如虚荣、脆弱、懒惰）封印的现状。
-    4.  **一句话定性**："他是一头还没睡醒的狮子，正等着被唤醒。"
-* **强制要求**：
-    - description 字段必须包含至少 3 个具体的性格特征描述（每个特征要详细展开，不少于 50 字）。
-    - description 字段必须包含 1 个具体的比喻（比喻要生动、有画面感，不少于 100 字）。
-    - 必须详细展开，不要概括总结。
-* **输出字段**：
-    - title: 身份标题（如：黄金狮王、烈焰元帅、逍遥鲲鹏、璀璨孔雀、温润考拉）
-    - subtitle: 茧中形态（如：茧中形态：暴躁孤君）
-    - description: 详细的判词（必须不少于 500 字），必须包含：至少 3 个具体的性格特征描述 + 1 个具体的比喻 + 天赋和魔心的深度分析
-    - score: 0-100 的总分
-    - radar: 6 个维度的雷达图数据
-      [
-        { "subject": "野心", "A": 0-100, "fullMark": 100 },
-        { "subject": "抗挫力", "A": 0-100, "fullMark": 100 },
-        { "subject": "策略性", "A": 0-100, "fullMark": 100 },
-        { "subject": "共情力", "A": 0-100, "fullMark": 100 },
-        { "subject": "独立性", "A": 0-100, "fullMark": 100 },
-        { "subject": "适应性", "A": 0-100, "fullMark": 100 }
-      ]
+【三才排序】
+根据答案计算帅才/将才/慧才的得分，按高低排列为：
+- 天命高才（得分最高）：这是他的核心天赋，与生俱来
+- 器用中才（得分中等）：这是他的辅助能力，可被激活
+- 觉醒低才（得分最低）：这是他的短板，需要修炼
 
-**板块二：五原力·金字塔断层扫描 (对应 pyramid 字段)**
-* **情绪目标**：震撼、焦虑（扎心）。
-* **字数要求**：每个层级的 diagnosis 字段必须不少于 200 字，4 层总计不少于 800 字。必须详细展开，不要概括。
-* **逻辑要求**：将人的能力比作一座金字塔。你必须根据用户答案，犀利地指出哪一层"塌陷"了。
-    * **Layer 1 根基层（安全原力 - 抗挫/自控）**：如果得分低，必须痛斥："地基是流沙，盖再高的楼也会塌。如果不修复这一层，遇到大考必崩盘。"
-    * **Layer 2 养分层（亲密原力 - 沟通/亲和）**：如果得分低，指出："家门不幸出逆子，皆因沟通灵种死。他在孤军奋战。"
-    * **Layer 3 枝干层（目标原力 - 专注/效能）**：指出："磨洋工、走神，不是态度问题，是心没定住。"
-    * **Layer 4 花果层（成就原力 - 学习/领导）**：如果前三层有问题，必须断言："潜力被锁死，真实学历恐止步于平庸。"
-* **强制要求**：对于每一个层级（Layer），diagnosis 字段必须包含以下 3 个部分，单层诊断字数不少于 200 字：
-    1. **表象行为分析**（孩子平时会怎么做）：详细描述他在这个维度上的具体行为表现，不少于 60 字。
-    2. **深层心理归因**（为什么会这样）：深入分析导致这种行为的内在心理原因，不少于 80 字。
-    3. **严重后果预警**：如果不改变会带来什么严重后果，要具体、有画面感，不少于 60 字。
-* **输出格式**：每个层级必须包含：
-    - layer: 层级名称（如："根基层：安全原力"）
-    - score: 0-100 的得分
-    - status: "collapse" | "unstable" | "solid"（score < 30 必须 collapse，30-60 为 unstable，>= 60 为 solid）
-    - diagnosis: 极长的诊断分析（必须不少于 200 字，必须包含上述 3 个部分），必须扎心、具体、有画面感
+【角色定义】
+根据"天命高才"判定所属系统和角色：
+- 帅才高 → 天系：霸道统帅、烈焰元帅、黄金狮王
+- 将才高 → 人系：温暖守护、仁义豪杰、铁血战神
+- 慧才高 → 地系：深谋谋士、智慧古灯、逍遥鲲鹏
 
-**板块三：命运分叉口·十年预演 (对应 future 字段)**
-* **情绪目标**：恐惧 vs 渴望。
-* **字数要求**：每个剧本（scenarioA 和 scenarioB）必须不少于 300 字。必须详细展开，不要概括。
-* **内容逻辑**：
-    * **剧本 A (维持现状)**：极度悲观。描述十年后他如果不改变，会变成什么样（如：啃老、频繁跳槽、抑郁、平庸的职场愤青）。
-    * **剧本 B (觉醒天命)**：极度辉煌。描述他修补漏洞后的样子（如：领袖、行业大咖、家庭支柱）。
-* **强制要求**：每个剧本（Scenario A/B）必须描述具体的场景，例如：
-    - 工作状态：他在做什么工作？工作环境如何？同事关系如何？
-    - 家庭关系：他与家人的关系如何？是否结婚？是否有孩子？家庭氛围如何？
-    - 收入水平：他的经济状况如何？生活质量如何？
-    - 心理状态：他的内心感受如何？是否满足？是否焦虑？
-    - 社交圈子：他的朋友圈如何？社会地位如何？
-    - 具体画面：要有具体的场景描述，让人能"看到"十年后的他。
-    - 每个剧本必须不少于 300 字，必须详细展开，不要概括。
+【蜕变环设计】
+茧中形态（现状）：
+- 必须描述他被"魔心"困住的平庸状态
+- 帅才的魔心是"虚荣"：怕丢脸、爱面子、输不起
+- 将才的魔心是"多疑"：患得患失、过度敏感、摇摆不定
+- 慧才的魔心是"嫉妒/吝啬"：斤斤计较、怕吃亏、不愿分享
 
-**板块四：通关密匙·乔门药方 (对应 keys 字段)**
-* **情绪目标**：行动。
-* **字数要求**：约 300 字（每个钥匙约 100 字）。
-* **内容逻辑**：给出 3 个具体的"乔门锦囊"。
-    * 例如："锁心猿（解决拖延）"、"烧魔心（解决虚荣）"、"通天脉（解决迷茫）"。
-    * 每把钥匙要对应具体的课程章节或行动建议，约 100 字。
-* **输出格式**：每个钥匙包含：
-    - name: 钥匙名称（如："锁心猿"）
-    - solution: 具体的解决方案/建议（约 100 字）
-    - courseIndex: 0-10 的课程节数索引
+终极形态（目标）：
+- 描述魔心转变为"天心"后的圆满状态
+- 帅才觉醒天心"义"：敢做敢当、不惧失败、大义凛然
+- 将才觉醒天心"仁"：内心安定、信任他人、仁者无忧
+- 慧才觉醒天心"智"：格局宏大、乐于分享、智者无惑
 
-**输出 JSON 格式（直接输出 JSON，不要 Markdown 代码块）：**
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+第二板块：五原力雷达（能量引擎层）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+【五原力提炼】
+基于盖洛普优势和 MBTI 维度，提炼五大核心原力：
+1. 执行原力：行动力、自控力、专注力（对应 J/P 维度 + 盖洛普执行力）
+2. 影响原力：领导力、说服力、气场（对应 E/I 维度 + 盖洛普影响力）
+3. 关系原力：共情力、亲和力、团队协作（对应 F/T 维度 + 盖洛普关系建立）
+4. 战略原力：策略性、分析力、全局观（对应 N/S 维度 + 盖洛普战略思维）
+5. 直觉原力：洞察力、创造力、第六感（综合判断）
+
+【雷达图分析】
+- 深度解析能量的高低分布：哪个最强？哪个最弱？
+- 分析原力之间的互补关系：强项如何带动弱项？弱项如何拖累强项？
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+第三板块：12灵种与人生剧本（生命图谱层）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+【12灵种映射】
+根据测评选择，映射 12 颗灵种的状态（沉睡/萌芽/觉醒）：
+
+价值判断三灵种：
+- 美丑（帅才核心）：在乎外在形象、面子、地位
+- 真假（将才核心）：在乎真诚、信任、情感
+- 善恶（慧才核心）：在乎对错、利弊、价值
+
+欲望动力三灵种：
+- 支配欲（帅才驱动）：追求控制、权力、领导
+- 陶醉欲（将才驱动）：追求被爱、认可、归属
+- 积累欲（慧才驱动）：追求知识、财富、安全
+
+心力修行三灵种：
+- 胆量（帅才修行）：面对失败的勇气
+- 定力（将才修行）：抵抗诱惑的意志
+- 格局（慧才修行）：超越得失的视野
+
+天心觉醒三灵种：
+- 勇气（帅转义）：勇者无畏
+- 仁爱（将转仁）：仁者无忧
+- 智慧（慧转智）：智者无惑
+
+【学业与人生镜像 - 核心重点！】
+⚠️ 这是报告最扎心的部分！必须通过 12 灵种的缺失，深度解释为什么孩子现在学习不好。
+
+举例逻辑：
+- 如果帅才高但"胆量"灵种沉睡 → 他因虚荣心太重，怕做错题丢脸，所以遇到难题就逃避放弃
+- 如果将才高但"定力"灵种沉睡 → 他因多疑心太重，怕被同学议论，所以上课走神不敢举手
+- 如果慧才高但"格局"灵种沉睡 → 他因嫉妒心太重，看到别人进步就焦虑，无法专注自己
+
+必须用"照妖镜"的方式，让家长恍然大悟："原来孩子学习不好，根源在这里！"
+
+【未来警示】
+必须明确指出：如果现在不修正这些"学习上的短路"，未来在职场会如何演变成"事业的崩塌"。
+
+要具体、有画面感，让家长感受到强烈的紧迫感：
+- 帅才不觉醒：未来遇到职场批评就愤然辞职，频繁跳槽，35岁成为职场弃儿
+- 将才不觉醒：未来无法建立稳固的职场人脉，被边缘化，孤立无援
+- 慧才不觉醒：未来斤斤计较得罪同事，升职无望，困在基层怨天尤人
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+第四板块：终极形态唤醒（生命跨越层）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+【巅峰描述】
+描绘孩子完全解锁"天心"后的终极人生图景。
+要让家长极其向往，热泪盈眶，愿意付出一切来帮助孩子达到这个状态：
+- 事业：行业领袖、受人尊敬、影响深远
+- 家庭：孝顺父母、夫妻恩爱、教子有方
+- 社交：知己满天下、贵人常相助
+- 内心：从容淡定、智慧通达、活出真我
+
+【解锁密钥】
+给出具体的修行方案：
+1. 改变命运的一句话：一句能刻进骨子里的觉醒咒语
+2. 三个具体修行动作：每个动作对应一个课程章节
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+【JSON 输出格式】
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 {
+  "yuanShen": {
+    "sanCaiRanking": [
+      { "type": "帅才/将才/慧才", "rank": "天命高才", "score": 0-100 },
+      { "type": "帅才/将才/慧才", "rank": "器用中才", "score": 0-100 },
+      { "type": "帅才/将才/慧才", "rank": "觉醒低才", "score": 0-100 }
+    ],
+    "roleDefinition": {
+      "system": "天系/人系/地系",
+      "roleName": "霸道统帅/深谋谋士/黄金守护者等",
+      "description": "角色描述（不少于100字）"
+    },
+    "transformation": {
+      "cocoonForm": {
+        "name": "茧中形态名称（如暴躁孤君）",
+        "moXin": "虚荣/多疑/嫉妒",
+        "description": "被魔心困住的详细描述（不少于150字），要具体、扎心"
+      },
+      "ultimateForm": {
+        "name": "终极形态名称（如黄金狮王）",
+        "tianXin": "义/仁/智",
+        "description": "觉醒天心后的详细描述（不少于150字），要辉煌、令人向往"
+      }
+    }
+  },
+  "wuYuanLi": {
+    "forces": [
+      { "subject": "执行", "score": 0-100, "fullMark": 100, "brief": "一句话描述" },
+      { "subject": "影响", "score": 0-100, "fullMark": 100, "brief": "一句话描述" },
+      { "subject": "关系", "score": 0-100, "fullMark": 100, "brief": "一句话描述" },
+      { "subject": "战略", "score": 0-100, "fullMark": 100, "brief": "一句话描述" },
+      { "subject": "直觉", "score": 0-100, "fullMark": 100, "brief": "一句话描述" }
+    ],
+    "distributionAnalysis": "能量高低分布深度解读（不少于200字）",
+    "complementAnalysis": "原力互补关系深度解读（不少于200字）"
+  },
+  "lingZhong": {
+    "lingZhongs": [
+      { "type": "美丑", "status": "沉睡/萌芽/觉醒", "score": 0-100, "diagnosis": "简短诊断" },
+      { "type": "真假", "status": "沉睡/萌芽/觉醒", "score": 0-100, "diagnosis": "简短诊断" },
+      { "type": "善恶", "status": "沉睡/萌芽/觉醒", "score": 0-100, "diagnosis": "简短诊断" },
+      { "type": "支配欲", "status": "沉睡/萌芽/觉醒", "score": 0-100, "diagnosis": "简短诊断" },
+      { "type": "陶醉欲", "status": "沉睡/萌芽/觉醒", "score": 0-100, "diagnosis": "简短诊断" },
+      { "type": "积累欲", "status": "沉睡/萌芽/觉醒", "score": 0-100, "diagnosis": "简短诊断" },
+      { "type": "胆量", "status": "沉睡/萌芽/觉醒", "score": 0-100, "diagnosis": "简短诊断" },
+      { "type": "定力", "status": "沉睡/萌芽/觉醒", "score": 0-100, "diagnosis": "简短诊断" },
+      { "type": "格局", "status": "沉睡/萌芽/觉醒", "score": 0-100, "diagnosis": "简短诊断" },
+      { "type": "勇气", "status": "沉睡/萌芽/觉醒", "score": 0-100, "diagnosis": "简短诊断" },
+      { "type": "仁爱", "status": "沉睡/萌芽/觉醒", "score": 0-100, "diagnosis": "简短诊断" },
+      { "type": "智慧", "status": "沉睡/萌芽/觉醒", "score": 0-100, "diagnosis": "简短诊断" }
+    ],
+    "academicMirror": {
+      "rootCause": "学业问题的根源分析（不少于150字），用照妖镜的方式揭示真相",
+      "manifestations": [
+        "具体表现1：详细描述孩子学习中的某个问题行为",
+        "具体表现2：详细描述孩子学习中的某个问题行为",
+        "具体表现3：详细描述孩子学习中的某个问题行为"
+      ],
+      "psychologyExplanation": "深层心理机制解释（不少于150字），要让家长恍然大悟"
+    },
+    "futureWarning": "未来警示（不少于300字）：如果不修正，学习短路如何演变成事业崩塌，要具体、有画面感、让家长感到紧迫"
+  },
+  "ultimate": {
+    "peakVision": "巅峰人生图景（不少于400字）：描绘孩子完全觉醒后的辉煌人生，要让家长热泪盈眶、极其向往",
+    "unlockKeys": {
+      "destinyQuote": "改变命运的一句话（简短有力，能刻进骨子里）",
+      "practiceActions": [
+        { "name": "修行动作1名称", "method": "具体方法（不少于100字）", "courseIndex": 0 },
+        { "name": "修行动作2名称", "method": "具体方法（不少于100字）", "courseIndex": 1 },
+        { "name": "修行动作3名称", "method": "具体方法（不少于100字）", "courseIndex": 2 }
+      ]
+    }
+  },
+  
   "identity": {
-    "title": "黄金狮王",
-    "subtitle": "茧中形态：暴躁孤君",
-    "description": "详细的 500 字判词，包含天赋和魔心的深度分析...",
-    "score": 85,
+    "title": "从 yuanShen.transformation.ultimateForm.name 复制",
+    "subtitle": "茧中形态：从 yuanShen.transformation.cocoonForm.name 复制",
+    "description": "从 yuanShen.roleDefinition.description + transformation 描述合并，约500字",
+    "score": 0-100,
     "radar": [
-      { "subject": "野心", "A": 85, "fullMark": 100 },
-      { "subject": "抗挫力", "A": 45, "fullMark": 100 },
-      { "subject": "策略性", "A": 70, "fullMark": 100 },
-      { "subject": "共情力", "A": 60, "fullMark": 100 },
-      { "subject": "独立性", "A": 75, "fullMark": 100 },
-      { "subject": "适应性", "A": 65, "fullMark": 100 }
+      { "subject": "执行", "A": "从 wuYuanLi.forces[0].score 复制", "fullMark": 100 },
+      { "subject": "影响", "A": "从 wuYuanLi.forces[1].score 复制", "fullMark": 100 },
+      { "subject": "关系", "A": "从 wuYuanLi.forces[2].score 复制", "fullMark": 100 },
+      { "subject": "战略", "A": "从 wuYuanLi.forces[3].score 复制", "fullMark": 100 },
+      { "subject": "直觉", "A": "从 wuYuanLi.forces[4].score 复制", "fullMark": 100 },
+      { "subject": "天心", "A": "综合计算", "fullMark": 100 }
     ]
   },
   "pyramid": [
-    { "layer": "根基层：安全原力", "score": 30, "status": "collapse", "diagnosis": "详细的 300 字扎心诊断，必须痛斥地基是流沙..." },
-    { "layer": "养分层：亲密原力", "score": 55, "status": "unstable", "diagnosis": "详细的 300 字诊断分析..." },
-    { "layer": "枝干层：目标原力", "score": 65, "status": "solid", "diagnosis": "详细的 300 字诊断分析..." },
-    { "layer": "花果层：成就原力", "score": 70, "status": "solid", "diagnosis": "详细的 300 字诊断分析..." }
+    { "layer": "元神层：三才天命", "score": 0-100, "status": "collapse/unstable/solid", "diagnosis": "从 yuanShen 提取关键诊断" },
+    { "layer": "能量层：五大原力", "score": 0-100, "status": "collapse/unstable/solid", "diagnosis": "从 wuYuanLi 提取关键诊断" },
+    { "layer": "灵种层：十二灵种", "score": 0-100, "status": "collapse/unstable/solid", "diagnosis": "从 lingZhong 提取关键诊断" },
+    { "layer": "跨越层：终极唤醒", "score": 0-100, "status": "collapse/unstable/solid", "diagnosis": "从 ultimate 提取关键诊断" }
   ],
   "future": {
-    "scenarioA": "十年后的悲惨剧本，约 250 字，要具体、有画面感...",
-    "scenarioB": "十年后的辉煌剧本，约 250 字，要具体、有画面感..."
+    "scenarioA": "从 lingZhong.futureWarning 复制或扩写，约300字",
+    "scenarioB": "从 ultimate.peakVision 复制或扩写，约300字"
   },
   "keys": [
-    { "name": "锁心猿", "solution": "具体的解决方案，约 100 字...", "courseIndex": 0 },
-    { "name": "烧魔心", "solution": "具体的解决方案，约 100 字...", "courseIndex": 1 },
-    { "name": "通天脉", "solution": "具体的解决方案，约 100 字...", "courseIndex": 2 }
+    { "name": "从 ultimate.unlockKeys.practiceActions[0].name 复制", "solution": "从 method 复制", "courseIndex": 0 },
+    { "name": "从 ultimate.unlockKeys.practiceActions[1].name 复制", "solution": "从 method 复制", "courseIndex": 1 },
+    { "name": "从 ultimate.unlockKeys.practiceActions[2].name 复制", "solution": "从 method 复制", "courseIndex": 2 }
   ]
 }
 
-**重要提示**：
-1. 必须输出纯 JSON，不要包含三个反引号（markdown 代码块标记）
-2. **总字数目标：必须超过 2500 中文字符**（板块一 500 字 + 板块二 800 字 + 板块三 600 字 + 板块四 300 字 = 至少 2200 字，加上详细展开必须超过 2500 字）
-3. 情绪曲线：好奇 -> 震撼 -> 扎心 -> 渴望 -> 行动
-4. 文案风格：半文半白、一针见血、先抑后扬、有画面感
-5. 如果 score < 30，status 必须设为 "collapse"，并给出严厉警告
-6. **⚠️ 关键要求：写得短就是不合格！必须详细展开每一个部分，不要概括总结。每个字段都要充分展开，让家长感受到专业和深度。**
+【最终检查】
+1. 确保 JSON 格式正确，可以被直接解析
+2. 确保总字数超过 2500 中文字符
+3. 确保语气像宗师在指点迷津，有穿透力
+4. 确保学业镜像部分足够扎心，让家长恍然大悟
+5. 确保巅峰描述部分足够辉煌，让家长热泪盈眶
 
-现在，请根据用户答案生成报告。`;
+现在，请根据用户答案生成完整报告。`;
 }
 
 /**
- * 格式化用户答案，生成给 AI 的输入
- * 返回格式化的答案对象，供 Prompt 使用
- */
-function formatAnswersForAI(answers: Record<number, string>): Record<number, string> {
-  // 直接返回答案对象，Prompt 中会使用 JSON.stringify
-  return answers;
-}
-
-/**
- * 调用 AI 生成报告
- * @param answers 用户答案记录 { questionId: selectedOptionText }
- * @returns 报告数据
+ * 调用 AI 生成四阶金字塔报告
  */
 export async function generateReportByAI(
   answers: Record<number, string>
 ): Promise<ReportData> {
-  // 使用自定义 API 提供商配置
   const apiKey = import.meta.env.VITE_API_KEY;
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "https://www.eden321.com/v1";
   const aiModel = import.meta.env.VITE_AI_MODEL || "gemini-3-flash-preview";
 
-  // 检查配置
   if (!apiKey) {
-    throw new Error(
-      "API 配置不完整。请检查 .env 文件中的 VITE_API_KEY"
-    );
+    throw new Error("API 配置不完整。请检查 .env 文件中的 VITE_API_KEY");
   }
 
   const finalUrl = `${apiBaseUrl}/chat/completions`;
-  
-  // 构建深度 Prompt
-  const reportPrompt = buildReportPrompt(answers);
+  const reportPrompt = buildFourTierPyramidPrompt(answers);
 
   const requestBody = {
     model: aiModel,
@@ -184,13 +284,12 @@ export async function generateReportByAI(
         content: reportPrompt,
       },
     ],
-    // 强制 JSON 模式（如果 API 支持）
     response_format: { type: "json_object" },
-    temperature: 0.7,
-    max_tokens: 8192, // 增加到 8192 以确保 3000 字能完整生成
+    temperature: 0.75,
+    max_tokens: 12000, // 增加 token 限制以确保 2500+ 字能完整生成
   };
 
-  console.log("正在请求 AI 生成报告...", finalUrl);
+  console.log("正在请求 AI 生成四阶金字塔报告...", finalUrl);
 
   try {
     const response = await fetch(finalUrl, {
@@ -217,7 +316,6 @@ export async function generateReportByAI(
     const data = await response.json();
     console.log("API 响应数据:", data);
 
-    // 提取回复内容
     const content = 
       data.choices?.[0]?.message?.content ||
       data.content ||
@@ -228,10 +326,8 @@ export async function generateReportByAI(
       throw new Error("AI 返回内容为空");
     }
 
-    // 尝试解析 JSON（可能包含 markdown 代码块）
+    // 清理 markdown 代码块标记
     let jsonContent = content.trim();
-    
-    // 移除可能的 markdown 代码块标记
     if (jsonContent.startsWith("```json")) {
       jsonContent = jsonContent.replace(/^```json\s*/, "").replace(/\s*```$/, "");
     } else if (jsonContent.startsWith("```")) {
@@ -244,13 +340,19 @@ export async function generateReportByAI(
       reportData = JSON.parse(jsonContent);
     } catch (parseError) {
       console.error("JSON 解析失败:", parseError);
-      console.error("原始内容:", jsonContent);
+      console.error("原始内容:", jsonContent.substring(0, 500));
       throw new Error(`AI 返回的不是有效的 JSON 格式: ${parseError}`);
     }
 
-    // 验证数据结构
-    if (!reportData.identity || !reportData.pyramid || !reportData.future || !reportData.keys) {
-      throw new Error("AI 返回的数据结构不完整，缺少必要字段");
+    // 验证新的四阶结构
+    if (!reportData.yuanShen && !reportData.identity) {
+      throw new Error("AI 返回的数据结构不完整，缺少 yuanShen 或 identity 字段");
+    }
+
+    // 如果返回的是旧格式，尝试兼容处理
+    if (!reportData.yuanShen && reportData.identity) {
+      console.warn("AI 返回了旧格式数据，尝试兼容处理...");
+      reportData = convertOldFormatToNew(reportData);
     }
 
     return reportData;
@@ -264,223 +366,92 @@ export async function generateReportByAI(
 }
 
 /**
+ * 将旧格式数据转换为新的四阶金字塔格式
+ */
+function convertOldFormatToNew(oldData: any): ReportData {
+  return {
+    yuanShen: {
+      sanCaiRanking: [
+        { type: "帅才", rank: "天命高才", score: 80 },
+        { type: "将才", rank: "器用中才", score: 60 },
+        { type: "慧才", rank: "觉醒低才", score: 40 },
+      ],
+      roleDefinition: {
+        system: "天系",
+        roleName: oldData.identity?.title || "未知角色",
+        description: oldData.identity?.description?.substring(0, 100) || "",
+      },
+      transformation: {
+        cocoonForm: {
+          name: oldData.identity?.subtitle?.replace("茧中形态：", "") || "平庸形态",
+          moXin: "虚荣",
+          description: oldData.identity?.description?.substring(0, 150) || "",
+        },
+        ultimateForm: {
+          name: oldData.identity?.title || "觉醒形态",
+          tianXin: "义",
+          description: oldData.identity?.description?.substring(150, 300) || "",
+        },
+      },
+    },
+    wuYuanLi: {
+      forces: (oldData.identity?.radar || []).slice(0, 5).map((r: any) => ({
+        subject: r.subject,
+        score: r.A || 50,
+        fullMark: 100,
+        brief: "",
+      })),
+      distributionAnalysis: "",
+      complementAnalysis: "",
+    },
+    lingZhong: {
+      lingZhongs: [],
+      academicMirror: {
+        rootCause: "",
+        manifestations: [],
+        psychologyExplanation: "",
+      },
+      futureWarning: oldData.future?.scenarioA || "",
+    },
+    ultimate: {
+      peakVision: oldData.future?.scenarioB || "",
+      unlockKeys: {
+        destinyQuote: "",
+        practiceActions: (oldData.keys || []).map((k: any) => ({
+          name: k.name,
+          method: k.solution,
+          courseIndex: k.courseIndex,
+        })),
+      },
+    },
+    // 保留旧版兼容字段
+    identity: oldData.identity,
+    pyramid: oldData.pyramid,
+    future: oldData.future,
+    keys: oldData.keys,
+  };
+}
+
+/**
  * 生成基础报告（快速部分）
- * 包含：identity（身份信息）和 pyramid（基础结构，简短诊断）
  */
 export async function generateBasicReport(
   answers: Record<number, string>
 ): Promise<Partial<ReportData>> {
-  // 使用自定义 API 提供商配置
-  const apiKey = import.meta.env.VITE_API_KEY;
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "https://www.eden321.com/v1";
-  const aiModel = import.meta.env.VITE_AI_MODEL || "gemini-3-flash-preview";
-
-  if (!apiKey) {
-    throw new Error(
-      "API 配置不完整。请检查 .env 文件中的 VITE_API_KEY"
-    );
-  }
-
-  const answersJson = JSON.stringify(answers, null, 2);
-  const basicPrompt = `你是一位精通《易经》三才智慧与现代儿童心理学的宗师"乔门"。
-
-用户的 27 道题答案如下：${answersJson}
-
-请快速生成基础报告（只输出 JSON，不要 Markdown 代码块）：
-
-{
-  "identity": {
-    "title": "身份标题（如：黄金狮王、烈焰元帅、逍遥鲲鹏、璀璨孔雀、温润考拉）",
-    "subtitle": "茧中形态（如：茧中形态：暴躁孤君）",
-    "description": "约 500 字的判词，必须包含：至少 3 个具体的性格特征描述 + 1 个具体的比喻 + 天赋和魔心的深度分析",
-    "score": 0-100 的总分,
-    "radar": [
-      { "subject": "野心", "A": 0-100, "fullMark": 100 },
-      { "subject": "抗挫力", "A": 0-100, "fullMark": 100 },
-      { "subject": "策略性", "A": 0-100, "fullMark": 100 },
-      { "subject": "共情力", "A": 0-100, "fullMark": 100 },
-      { "subject": "独立性", "A": 0-100, "fullMark": 100 },
-      { "subject": "适应性", "A": 0-100, "fullMark": 100 }
-    ]
-  },
-  "pyramid": [
-    { "layer": "根基层：安全原力", "score": 0-100, "status": "collapse" | "unstable" | "solid", "diagnosis": "简短诊断（约 50 字）" },
-    { "layer": "养分层：亲密原力", "score": 0-100, "status": "collapse" | "unstable" | "solid", "diagnosis": "简短诊断（约 50 字）" },
-    { "layer": "枝干层：目标原力", "score": 0-100, "status": "collapse" | "unstable" | "solid", "diagnosis": "简短诊断（约 50 字）" },
-    { "layer": "花果层：成就原力", "score": 0-100, "status": "collapse" | "unstable" | "solid", "diagnosis": "简短诊断（约 50 字）" }
-  ]
-}`;
-
-  const finalUrl = `${apiBaseUrl}/chat/completions`;
-  const requestBody = {
-    model: aiModel,
-    messages: [{ role: "user", content: basicPrompt }],
-    response_format: { type: "json_object" },
-    temperature: 0.7,
-    max_tokens: 3000,
-  };
-
-  try {
-    const response = await fetch(finalUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify(requestBody),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`API 调用失败: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content || data.content || data.response || "";
-
-    if (!content) {
-      throw new Error("AI 返回内容为空");
-    }
-
-    let jsonContent = content.trim();
-    if (jsonContent.startsWith("```json")) {
-      jsonContent = jsonContent.replace(/^```json\s*/, "").replace(/\s*```$/, "");
-    } else if (jsonContent.startsWith("```")) {
-      jsonContent = jsonContent.replace(/^```\s*/, "").replace(/\s*```$/, "");
-    }
-
-    const basicData = JSON.parse(jsonContent);
-    return {
-      identity: basicData.identity,
-      pyramid: basicData.pyramid,
-    };
-  } catch (error) {
-    console.error("生成基础报告失败:", error);
-    throw error instanceof Error ? error : new Error("生成基础报告时发生未知错误");
-  }
+  // 直接调用完整报告生成
+  return generateReportByAI(answers);
 }
 
 /**
- * 生成深度分析（耗时部分）
- * 包含：详细的 pyramid diagnosis, future, keys
+ * 生成深度分析（兼容旧版调用）
  */
 export async function generateDeepAnalysis(
   answers: Record<number, string>,
   basicData: Partial<ReportData>
 ): Promise<Partial<ReportData>> {
-  // 使用自定义 API 提供商配置
-  const apiKey = import.meta.env.VITE_API_KEY;
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "https://www.eden321.com/v1";
-  const aiModel = import.meta.env.VITE_AI_MODEL || "gemini-3-flash-preview";
-
-  if (!apiKey) {
-    throw new Error(
-      "API 配置不完整。请检查 .env 文件中的 VITE_API_KEY"
-    );
+  // 新版一次性生成完整报告，此函数保留用于兼容
+  if (basicData.yuanShen || basicData.identity) {
+    return basicData;
   }
-
-  const answersJson = JSON.stringify(answers, null, 2);
-  const basicDataJson = JSON.stringify(basicData, null, 2);
-  
-  // 获取基础报告中的金字塔数据
-  const pyramidBase = basicData.pyramid || [];
-  const layer1 = pyramidBase[0] || { score: 0, status: "unstable" };
-  const layer2 = pyramidBase[1] || { score: 0, status: "unstable" };
-  const layer3 = pyramidBase[2] || { score: 0, status: "unstable" };
-  const layer4 = pyramidBase[3] || { score: 0, status: "unstable" };
-  
-  const deepPrompt = `你是一位精通《易经》三才智慧与现代儿童心理学的宗师"乔门"。
-
-用户的 27 道题答案如下：${answersJson}
-
-基础报告数据：${basicDataJson}
-
-请基于基础报告，生成深度分析部分（只输出 JSON，不要 Markdown 代码块）：
-
-{
-  "pyramid": [
-    { 
-      "layer": "根基层：安全原力", 
-      "score": ${layer1.score}, 
-      "status": "${layer1.status}", 
-      "diagnosis": "详细的 200 字诊断，必须包含：1. 表象行为分析（60字） 2. 深层心理归因（80字） 3. 严重后果预警（60字）"
-    },
-    { 
-      "layer": "养分层：亲密原力", 
-      "score": ${layer2.score}, 
-      "status": "${layer2.status}", 
-      "diagnosis": "详细的 200 字诊断，必须包含：1. 表象行为分析（60字） 2. 深层心理归因（80字） 3. 严重后果预警（60字）"
-    },
-    { 
-      "layer": "枝干层：目标原力", 
-      "score": ${layer3.score}, 
-      "status": "${layer3.status}", 
-      "diagnosis": "详细的 200 字诊断，必须包含：1. 表象行为分析（60字） 2. 深层心理归因（80字） 3. 严重后果预警（60字）"
-    },
-    { 
-      "layer": "花果层：成就原力", 
-      "score": ${layer4.score}, 
-      "status": "${layer4.status}", 
-      "diagnosis": "详细的 200 字诊断，必须包含：1. 表象行为分析（60字） 2. 深层心理归因（80字） 3. 严重后果预警（60字）"
-    }
-  ],
-  "future": {
-    "scenarioA": "十年后的悲惨剧本，必须不少于 300 字，要具体、有画面感，描述工作状态、家庭关系、收入水平、心理状态、社交圈子",
-    "scenarioB": "十年后的辉煌剧本，必须不少于 300 字，要具体、有画面感，描述工作状态、家庭关系、收入水平、心理状态、社交圈子"
-  },
-  "keys": [
-    { "name": "锁心猿", "solution": "具体的解决方案，约 100 字...", "courseIndex": 0 },
-    { "name": "烧魔心", "solution": "具体的解决方案，约 100 字...", "courseIndex": 1 },
-    { "name": "通天脉", "solution": "具体的解决方案，约 100 字...", "courseIndex": 2 }
-  ]
-}`;
-
-  const finalUrl = `${apiBaseUrl}/chat/completions`;
-  const requestBody = {
-    model: aiModel,
-    messages: [{ role: "user", content: deepPrompt }],
-    response_format: { type: "json_object" },
-    temperature: 0.7,
-    max_tokens: 6000,
-  };
-
-  try {
-    const response = await fetch(finalUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify(requestBody),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`API 调用失败: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-
-    const data = await response.json();
-    const content = data.choices?.[0]?.message?.content || data.content || data.response || "";
-
-    if (!content) {
-      throw new Error("AI 返回内容为空");
-    }
-
-    let jsonContent = content.trim();
-    if (jsonContent.startsWith("```json")) {
-      jsonContent = jsonContent.replace(/^```json\s*/, "").replace(/\s*```$/, "");
-    } else if (jsonContent.startsWith("```")) {
-      jsonContent = jsonContent.replace(/^```\s*/, "").replace(/\s*```$/, "");
-    }
-
-    const deepData = JSON.parse(jsonContent);
-    return {
-      pyramid: deepData.pyramid,
-      future: deepData.future,
-      keys: deepData.keys,
-    };
-  } catch (error) {
-    console.error("生成深度分析失败:", error);
-    throw error instanceof Error ? error : new Error("生成深度分析时发生未知错误");
-  }
+  return generateReportByAI(answers);
 }

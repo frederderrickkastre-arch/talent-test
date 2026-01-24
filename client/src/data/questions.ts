@@ -59,8 +59,8 @@ export const questions: TalentQuestion[] = [
     question: "如果可以实现一个内心最深处的渴望，你最想拥有的画面是？",
     options: [
       { text: "俯瞰领地的金雕", type: "S", score: 5, imageUrl: "/images/questions/俯瞰领地的金雕.png" },
-      { text: "篝火旁的英雄聚会", type: "J", score: 5, imageUrl: "/images/questions/篝火旁的英雄聚会.png" },
-      { text: "漂浮的星空图书馆", type: "H", score: 5, imageUrl: "/images/questions/漂浮的星空图书馆.png" }
+      { text: "篝火旁的英雄聚会", type: "J", score: 5, imageUrl: "/images/questions/英雄聚会.png" },
+      { text: "漂浮的星空图书馆", type: "H", score: 5, imageUrl: "/images/questions/星空图书馆.png" }
     ],
     dimension: "核心渴望"
   },
@@ -70,8 +70,8 @@ export const questions: TalentQuestion[] = [
     question: "在幻境中，你面前出现了三扇恐惧之门。哪扇门让你最不想进去？",
     options: [
       { text: "孤独的高处王座", type: "S", score: 5, imageUrl: "/images/questions/孤独的高处王座.png" },
-      { text: "迷雾中松开的双手", type: "J", score: 5, imageUrl: "/images/questions/迷雾中松开的双手.png" },
-      { text: "被锁链束缚的家园", type: "H", score: 5, imageUrl: "/images/questions/被锁链束缚的家园.png" }
+      { text: "迷雾中松开的双手", type: "J", score: 5, imageUrl: "/images/questions/迷雾中松开的手2.png" },
+      { text: "被锁链束缚的家园", type: "H", score: 5, imageUrl: "/images/questions/束缚的家园.png" }
     ],
     dimension: "恐惧之门"
   },
@@ -91,7 +91,7 @@ export const questions: TalentQuestion[] = [
     phase: 1,
     question: "智者告诉你，要治愈内心的伤痛，你需要选择一种终极解药。你会选？",
     options: [
-      { text: "碎裂的华丽镜子", type: "S", score: 5, imageUrl: "/images/questions/碎裂的华丽镜子.png" },
+      { text: "碎裂的华丽镜子", type: "S", score: 5, imageUrl: "/images/questions/碎裂的华丽镜子4.png" },
       { text: "照亮森林的火把", type: "J", score: 5, imageUrl: "/images/questions/照亮森林的火把.png" },
       { text: "撒向人群的金币", type: "H", score: 5, imageUrl: "/images/questions/撒向人群的金币.png" }
     ],
