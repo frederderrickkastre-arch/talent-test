@@ -160,14 +160,14 @@ export async function generateReportByAI(
   answers: Record<number, string>
 ): Promise<ReportData> {
   // 使用自定义 API 提供商配置
-  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
-  const apiBaseUrl = "https://www.eden321.com/v1";
-  const aiModel = "gemini-3-pro-preview";
+  const apiKey = import.meta.env.VITE_API_KEY;
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "https://www.eden321.com/v1";
+  const aiModel = import.meta.env.VITE_AI_MODEL || "gemini-3-flash-preview";
 
   // 检查配置
   if (!apiKey) {
     throw new Error(
-      "API 配置不完整。请检查 .env 文件中的 VITE_GOOGLE_API_KEY"
+      "API 配置不完整。请检查 .env 文件中的 VITE_API_KEY"
     );
   }
 
@@ -271,13 +271,13 @@ export async function generateBasicReport(
   answers: Record<number, string>
 ): Promise<Partial<ReportData>> {
   // 使用自定义 API 提供商配置
-  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
-  const apiBaseUrl = "https://www.eden321.com/v1";
-  const aiModel = "gemini-3-pro-preview";
+  const apiKey = import.meta.env.VITE_API_KEY;
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "https://www.eden321.com/v1";
+  const aiModel = import.meta.env.VITE_AI_MODEL || "gemini-3-flash-preview";
 
   if (!apiKey) {
     throw new Error(
-      "API 配置不完整。请检查 .env 文件中的 VITE_GOOGLE_API_KEY"
+      "API 配置不完整。请检查 .env 文件中的 VITE_API_KEY"
     );
   }
 
@@ -369,13 +369,13 @@ export async function generateDeepAnalysis(
   basicData: Partial<ReportData>
 ): Promise<Partial<ReportData>> {
   // 使用自定义 API 提供商配置
-  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
-  const apiBaseUrl = "https://www.eden321.com/v1";
-  const aiModel = "gemini-3-pro-preview";
+  const apiKey = import.meta.env.VITE_API_KEY;
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "https://www.eden321.com/v1";
+  const aiModel = import.meta.env.VITE_AI_MODEL || "gemini-3-flash-preview";
 
   if (!apiKey) {
     throw new Error(
-      "API 配置不完整。请检查 .env 文件中的 VITE_GOOGLE_API_KEY"
+      "API 配置不完整。请检查 .env 文件中的 VITE_API_KEY"
     );
   }
 
